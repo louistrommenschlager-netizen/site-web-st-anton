@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Affichage TV - Carspach</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    
+    body { background-color: #0d3b66; color: #ffffff; height: 100vh; overflow: hidden; position: relative; }
+
+    /* BANDEAU DU BAS FIXE */
+    .bottom-bar {
+      height: 60px; 
+      background-color: #ffffff; 
+      color: #0b2545;
+      display: flex; 
+      align-items: center;
+      padding: 0 40px; 
+      gap: 35px; 
+      font-size: 1.4rem; 
+      font-weight: 600;
+      position: fixed; 
+      bottom: 0; 
+      width: 100%; 
+      z-index: 100;
+      box-shadow: 0 -3px 10px rgba(0,0,0,0.15);
+    }
+    .bottom-bar i { margin-right: 8px; font-size: 1.2rem; color: #0b2545; }
+    .hotel-name { margin-left: auto; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+
+    /* CONTENEUR PRINCIPAL */
+    .viewport {
+      width: 100%;
+      height: calc(100vh - 60px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* GESTION DES TRANSITIONS (GLISSEMENT CONTINU VERS LA GAUCHE) */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transform: translateX(100%); /* Position de départ : hors écran à droite */
+      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease-in-out;
+      display: flex;
+    }
+
+    .slide.active { 
+      opacity: 1; 
+      transform: translateX(0); /* Arrivée au centre */
+    }
+
+    .slide.exit-left { 
+      opacity: 0; 
+      transform: translateX(-100%); /* Sortie vers la gauche */
+    }
+
+    .fade-text { 
+      transition: opacity 0.5s ease-in-out; 
+      opacity: 1; 
+    }
+    .fade-text.fade-out { 
+      opacity: 0; 
+    }
+
+    /* SLIDE 0 : ACCUEIL */
+    .welcome-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+      gap: 20px;
+    }
+    .welcome-title { font-size: 4.5rem; font-weight: 700; }
+    .welcome-subtitle { font-size: 2.2rem; font-weight: 400; color: rgba(255, 255, 255, 0.85); max-width: 900px; line-height: 1.3; }
+
+    /* SLIDE 1 : MÉTÉO DU JOUR */
+    .sidebar {
+      width: 32%;
+      background-color: rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 50px 40px;
+      gap: 50px;
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .metric .value { display: block; font-size: 2.3rem; font-weight: 700; line-height: 1.1; }
+    .metric .label { font-size: 1.2rem; color: rgba(255, 255, 255, 0.75); margin-top: 4px; display: block; }
+
+    .today-main {
+      width: 68%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .today-header { font-size: 3.8rem; font-weight: 600; }
+    .today-content { display: flex; align-items: center; justify-content: center; width: 90%; gap: 40px; }
+    .today-left-box { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 15px; }
+    .today-left-box i { font-size: 6.5rem; }
+    .today-left-box p { font-size: 1.6rem; font-weight: 400; max-width: 320px; line-height: 1.3; }
+    .divider-line { width: 1px; height: 140px; background-color: rgba(255, 255, 255, 0.3); }
+    .today-right-box { flex: 1; display: flex; justify-content: center; align-items: center; }
+    .temp-display { font-size: 7.5rem; font-weight: 700; }
+
+    /* SLIDE 2 : PRÉVISIONS 3 JOURS */
+    .forecast-full { width: 100%; height: 100%; display: flex; }
+    .forecast-col { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 50px 20px; border-right: 1px solid rgba(255, 255, 255, 0.2); text-align: center; }
+    .forecast-col:last-child { border-right: none; }
+    .forecast-col h3 { font-size: 3.2rem; font-weight: 600; margin-top: 10px; }
+    .forecast-col-mid { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .forecast-col-mid i { font-size: 5.5rem; }
+    .forecast-col-mid p { font-size: 1.4rem; max-width: 250px; line-height: 1.3; color: rgba(255, 255, 255, 0.9); }
+    .forecast-col-bottom { width: 80%; margin-bottom: 20px; }
+    .temp-row { display: flex; justify-content: space-around; font-size: 2.5rem; font-weight: 700; }
+    .label-row { display: flex; justify-content: space-around; font-size: 1.2rem; color: rgba(255, 255, 255, 0.7); margin-top: 5px; }
+
+    /* SLIDE 3 : WEBCAM & SLIDE 5 : VIDÉO */
+    .webcam-container { width: 100%; height: 100%; background: #000; position: relative; overflow: hidden; }
+    .webcam-iframe { width: 100%; height: calc(100% + 70px); border: none; position: absolute; top: 0; left: 0; }
+    .custom-video { width: 100%; height: 100%; object-fit: cover; border: none; position: absolute; top: 0; left: 0; }
+
+    /* SLIDE CARTE DES REMONTÉES ÉTÉ */
+    .map-slide-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background-color: #0b2545;
+      overflow: hidden;
+    }
+
+    .map-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .map-bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .lift-marker {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      z-index: 20;
+    }
+
+    .pin-badge {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4), 0 0 0 3px #ffffff;
+      transition: transform 0.3s ease;
+    }
+
+    .pin-badge.open {
+      background: #2ecc71;
+      animation: pulse-pin-glow 2s infinite;
+    }
+
+    .pin-badge.closed {
+      background: #e74c3c;
+    }
+
+    .pin-badge svg {
+      width: 26px;
+      height: 26px;
+      fill: #ffffff;
+      filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.3));
+    }
+
+    @keyframes pulse-pin-glow {
+      0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.8), 0 0 0 3px #ffffff; }
+      70% { box-shadow: 0 0 0 16px rgba(46, 204, 113, 0), 0 0 0 3px #ffffff; }
+      100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0), 0 0 0 3px #ffffff; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="viewport">
+
+    <!-- SLIDE 0 : ACCUEIL -->
+    <div class="slide active" id="slideWelcome">
+      <div class="welcome-container">
+        <h1 class="welcome-title fade-text" id="welcome-title">Willkommen</h1>
+        <p class="welcome-subtitle fade-text" id="welcome-subtitle">in der Botschaft von St. Anton am Arlberg</p>
+      </div>
+    </div>
+
+    <!-- SLIDE 1 : MÉTÉO DU JOUR -->
+    <div class="slide" id="slide1">
+      <aside class="sidebar">
+        <div class="metric">
+          <span class="value fade-text" id="val-wind">-- km/h</span>
+          <span class="label fade-text" id="lbl-wind">Wind</span>
+        </div>
+        <div class="metric">
+          <span class="value fade-text" id="val-humidity">-- %</span>
+          <span class="label fade-text" id="lbl-humidity">Feuchtigkeit</span>
+        </div>
+        <div class="metric">
+          <span class="value fade-text" id="val-rain">-- mm</span>
+          <span class="label fade-text" id="lbl-rain">Niederschlag</span>
+        </div>
+      </aside>
+
+      <div class="today-main">
+        <h2 id="title-today" class="today-header fade-text">Heute</h2>
+        
+        <div class="today-content">
+          <div class="today-left-box">
+            <i id="icon-today" class="fas fa-sun"></i>
+            <p id="desc-today" class="fade-text">Wird geladen...</p>
+          </div>
+          
+          <div class="divider-line"></div>
+          
+          <div class="today-right-box">
+            <div class="temp-display fade-text" id="val-temp">--°C</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 : PRÉVISIONS 3 JOURS -->
+    <div class="slide" id="slide2">
+      <div class="forecast-full">
+        <div class="forecast-col">
+          <h3 id="day1-name" class="fade-text">Morgen</h3>
+          <div class="forecast-col-mid">
+            <i id="day1-icon" class="fas fa-sun"></i>
+            <p id="day1-desc" class="fade-text">--</p>
+          </div>
+          <div class="forecast-col-bottom">
+            <div class="temp-row">
+              <span id="day1-max" class="fade-text">--°C</span>
+              <span id="day1-min" class="fade-text">--°C</span>
+            </div>
+            <div class="label-row">
+              <span id="lbl-day1-max" class="fade-text">Tag</span>
+              <span id="lbl-day1-min" class="fade-text">Nachts</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="forecast-col">
+          <h3 id="day2-name" class="fade-text">--</h3>
+          <div class="forecast-col-mid">
+            <i id="day2-icon" class="fas fa-sun"></i>
+            <p id="day2-desc" class="fade-text">--</p>
+          </div>
+          <div class="forecast-col-bottom">
+            <div class="temp-row">
+              <span id="day2-max" class="fade-text">--°C</span>
+              <span id="day2-min" class="fade-text">--°C</span>
+            </div>
+            <div class="label-row">
+              <span id="lbl-day2-max" class="fade-text">Tag</span>
+              <span id="lbl-day2-min" class="fade-text">Nachts</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="forecast-col">
+          <h3 id="day3-name" class="fade-text">--</h3>
+          <div class="forecast-col-mid">
+            <i id="day3-icon" class="fas fa-sun"></i>
+            <p id="day3-desc" class="fade-text">--</p>
+          </div>
+          <div class="forecast-col-bottom">
+            <div class="temp-row">
+              <span id="day3-max" class="fade-text">--°C</span>
+              <span id="day3-min" class="fade-text">--°C</span>
+            </div>
+            <div class="label-row">
+              <span id="lbl-day3-max" class="fade-text">Tag</span>
+              <span id="lbl-day3-min" class="fade-text">Nachts</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 : WEBCAM -->
+    <div class="slide" id="slide3">
+      <div class="webcam-container">
+        <iframe id="webcam-iframe" class="webcam-iframe" referrerpolicy="no-referrer" src="about:blank"></iframe>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 : CARTE DES REMONTÉES ÉTÉ -->
+    <div class="slide" id="slide4">
+      <div class="map-slide-container">
+        <div class="map-wrapper">
+          <img id="map-img" src="https://vcdn.bergfex.at/images/resized/0e/a236879e501d050e_c6a605c8e0158444@2x.jpg" alt="Sommer Panorama St. Anton" class="map-bg-image">
+          <div id="lifts-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 : VIDÉO MP4 PERSONNALISÉE -->
+    <div class="slide" id="slide5">
+      <div class="webcam-container">
+        <video id="custom-mp4-video" class="custom-video" autoplay muted playsinline src="https://github.com/louistrommenschlager-netizen/tv-video/releases/download/v1.0/Aktuelle.Bedingungen.in.St.Anton.am.Arlberg.mp4"></video>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="bottom-bar">
+    <div><i class="far fa-clock"></i> <span id="current-time">--:--</span></div>
+    <div id="bar-info"><i class="fas fa-temperature-low"></i> <span id="bar-temp">-- °C</span></div>
+    <div class="hotel-name"><i class="fas fa-phone"></i> Alpinnotruf 140</div>
+  </footer>
+
+  <script>
+    const FERATEL_STREAM_URL = "https://webtv.feratel.com/webtv/?design=v3&cam=5690&lg=de";
+
+    const SVG_CABLECAR = `<svg viewBox="0 0 24 24"><path d="M19 10h-2V7h1a1 1 0 0 0 0-2H6a1 1 0 0 0 0 2h1v3H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-8-3h2v3h-2V7zm-6 5h4v4H5v-4zm14 4h-4v-4h4v4z"/></svg>`;
+    const SVG_CHAIRLIFT = `<svg viewBox="0 0 24 24"><path d="M4 3l16 4M12 5v7m0 0h5a2 2 0 0 1 2 2v2a1 1 0 0 1-1 1h-6v3h3a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2h3v-3H9a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h3z"/></svg>`;
+
+    const liftData = [
+      { name: "Galzigbahn", type: "cablecar", x: 43.5, y: 66.5, openH: 8, openM: 15, closeH: 16, closeM: 30, days: [0, 1, 2, 3, 4, 5, 6] },
+      { name: "Valluga I", type: "cablecar", x: 23.6, y: 29.5, openH: 8, openM: 30, closeH: 16, closeM: 10, days: [0, 1, 2, 3, 4, 5, 6] },
+      { name: "Valluga II", type: "cablecar", x: 11.2, y: 6.0, openH: 8, openM: 40, closeH: 16, closeM: 20, days: [0, 1, 2, 3, 4, 5, 6] },
+      { name: "Gampenbahn", type: "chairlift", x: 56.5, y: 49.5, openH: 8, openM: 15, closeH: 16, closeM: 15, days: [0, 1, 2, 5, 6] },
+      { name: "Kapallbahn", type: "chairlift", x: 54.0, y: 28.5, openH: 8, openM: 30, closeH: 16, closeM: 0, days: [0, 1, 2, 5, 6] },
+      { name: "Rendlbahn", type: "cablecar", x: 86.0, y: 73.0, openH: 8, openM: 15, closeH: 16, closeM: 10, days: [3, 4] }
+    ];
+
+    function renderLiftMarkers() {
+      const container = document.getElementById('lifts-container');
+      container.innerHTML = '';
+      const now = new Date();
+      const currentDay = now.getDay();
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      liftData.forEach(lift => {
+        const openMinutes = lift.openH * 60 + lift.openM;
+        const closeMinutes = lift.closeH * 60 + lift.closeM;
+        const operatesToday = lift.days.includes(currentDay);
+        const isOpen = operatesToday && (currentMinutes >= openMinutes && currentMinutes < closeMinutes);
+        const iconSvg = (lift.type === "chairlift") ? SVG_CHAIRLIFT : SVG_CABLECAR;
+        const marker = document.createElement('div');
+        marker.className = 'lift-marker';
+        marker.style.left = `${lift.x}%`;
+        marker.style.top = `${lift.y}%`;
+        marker.innerHTML = `<div class="pin-badge ${isOpen ? 'open' : 'closed'}">${iconSvg}</div>`;
+        container.appendChild(marker);
+      });
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('current-time').textContent = `${hours}:${minutes}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    let weatherData = null;
+    async function fetchWeatherData() {
+      try {
+        const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=47.6181&longitude=7.2118&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Europe%2FParis');
+        weatherData = await response.json();
+        updateWeatherUI('de');
+      } catch (error) {
+        console.error("Erreur météo:", error);
+      }
+    }
+
+    function getWeatherIcon(code) {
+      if (code === 0) return 'fa-sun';
+      if (code >= 1 && code <= 3) return 'fa-cloud-sun';
+      if (code >= 45 && code <= 48) return 'fa-smog';
+      if (code >= 51 && code <= 67) return 'fa-cloud-rain';
+      if (code >= 71 && code <= 77) return 'fa-snowflake';
+      if (code >= 80 && code <= 82) return 'fa-cloud-showers-heavy';
+      if (code >= 95) return 'fa-bolt';
+      return 'fa-cloud';
+    }
+
+    function getRichWeatherDesc(code, tempMax, lang, index = 0) {
+      if (code === 0) {
+        if (index === 1) return (lang === 'de') ? "Strahlender Sonnenschein den ganzen Tag" : (lang === 'fr' ? "Grand soleil toute la journée" : "Bright sunshine all day");
+        if (index === 2) return (lang === 'de') ? "Klarer Himmel und exzellente Fernsicht" : (lang === 'fr' ? "Ciel dégagé et excellente visibilité" : "Clear skies and excellent visibility");
+        return (lang === 'de') ? "Viel Sonnenschein und wolkenlos" : (lang === 'fr' ? "Ensoleillé et ciel dégagé" : "Mostly sunny and clear");
+      }
+      if (code >= 1 && code <= 3) {
+        if (index === 1) return (lang === 'de') ? "Sonne-Wolken-Mix mit stabilen Verhältnissen" : (lang === 'fr' ? "Alternance de soleil et nuages" : "Mix of sun and clouds");
+        if (index === 2) return (lang === 'de') ? "Vorübergehende Wolkenfelder, meist freundlich" : (lang === 'fr' ? "Passages nuageux, globalement lumineux" : "Passing clouds, mostly pleasant");
+        return (lang === 'de') ? "Überwiegend sonnig mit leichten Schleierwolken" : (lang === 'fr' ? "Très ensoleillé avec légers voiles nuageux" : "Mostly sunny with light clouds");
+      }
+      if (code >= 51 && code <= 67) return (lang === 'de') ? "Anhaltender Niederschlag in den Tälern" : (lang === 'fr' ? "Pluie continue" : "Continuous rainfall");
+      if (code >= 71 && code <= 77) return (lang === 'de') ? "Schneefall, winterliche Bedingungen am Berg" : (lang === 'fr' ? "Chutes de neige" : "Snowfall, wintry conditions");
+      if (code >= 80 && code <= 82) return (lang === 'de') ? "Lokale Schauer und veränderliche Bewölkung" : (lang === 'fr' ? "Averses locales et ciel variable" : "Local showers and variable clouds");
+      if (code >= 95) return (lang === 'de') ? "Aufziehende Gewitter am Nachmittag" : (lang === 'fr' ? "Risque d'orages dans l'après-midi" : "Thunderstorms in the afternoon");
+      return (lang === 'de') ? "Wechselhafte Bergwetterlage" : (lang === 'fr' ? "Météo variable" : "Variable weather conditions");
+    }
+
+    function getDayNameOffset(offset, lang) {
+      const date = new Date();
+      date.setDate(date.getDate() + offset);
+      const daysDE = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+      const daysFR = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+      const daysEN = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      if (lang === 'de') return daysDE[date.getDay()];
+      if (lang === 'fr') return daysFR[date.getDay()];
+      return daysEN[date.getDay()];
+    }
+
+    function updateWeatherUI(lang = 'de') {
+      if (!weatherData) return;
+      const current = weatherData.current;
+      const daily = weatherData.daily;
+      document.getElementById('val-temp').textContent = `${Math.round(current.temperature_2m)}°C`;
+      const barTempEl = document.getElementById('bar-temp');
+      if (barTempEl) barTempEl.textContent = `${Math.round(current.temperature_2m)} °C`;
+      document.getElementById('val-wind').textContent = `${Math.round(current.wind_speed_10m)} km/h`;
+      document.getElementById('val-humidity').textContent = `${current.relative_humidity_2m}%`;
+      document.getElementById('val-rain').textContent = `${current.precipitation} mm`;
+      document.getElementById('icon-today').className = `fas ${getWeatherIcon(current.weather_code)}`;
+      document.getElementById('desc-today').textContent = getRichWeatherDesc(current.weather_code, current.temperature_2m, lang, 0);
+      if (lang === 'de') {
+        document.getElementById('title-today').textContent = "Heute";
+        document.getElementById('lbl-wind').textContent = "Wind";
+        document.getElementById('lbl-humidity').textContent = "Feuchtigkeit";
+        document.getElementById('lbl-rain').textContent = "Niederschlag";
+      } else if (lang === 'fr') {
+        document.getElementById('title-today').textContent = "Aujourd'hui";
+        document.getElementById('lbl-wind').textContent = "Vent";
+        document.getElementById('lbl-humidity').textContent = "Humidité";
+        document.getElementById('lbl-rain').textContent = "Précipitations";
+      }
+      for (let i = 1; i <= 3; i++) {
+        let dayTitle = (i === 1) ? ((lang === 'de') ? "Morgen" : (lang === 'fr' ? "Demain" : "Tomorrow")) : getDayNameOffset(i, lang);
+        document.getElementById(`day${i}-name`).textContent = dayTitle;
+        document.getElementById(`day${i}-icon`).className = `fas ${getWeatherIcon(daily.weather_code[i])}`;
+        document.getElementById(`day${i}-desc`).textContent = getRichWeatherDesc(daily.weather_code[i], daily.temperature_2m_max[i], lang, i);
+        document.getElementById(`day${i}-max`).textContent = `${Math.round(daily.temperature_2m_max[i])}°C`;
+        document.getElementById(`day${i}-min`).textContent = `${Math.round(daily.temperature_2m_min[i])}°C`;
+        document.getElementById(`lbl-day${i}-max`).textContent = (lang === 'de') ? "Tag" : (lang === 'fr' ? "Jour" : "Day");
+        document.getElementById(`lbl-day${i}-min`).textContent = (lang === 'de') ? "Nacht" : (lang === 'fr' ? "Nuit" : "Night");
+      }
+    }
+
+    function fadeTranslate(elementsToFade, updateContentCallback) {
+      elementsToFade.forEach(el => el.classList.add('fade-out'));
+      setTimeout(() => {
+        updateContentCallback();
+        elementsToFade.forEach(el => el.classList.remove('fade-out'));
+      }, 500);
+    }
+
+    function setWelcomeLanguage(lang) {
+      const titleEl = document.getElementById('welcome-title');
+      const subEl = document.getElementById('welcome-subtitle');
+      titleEl.classList.add('fade-out');
+      subEl.classList.add('fade-out');
+      setTimeout(() => {
+        if (lang === 'de') { titleEl.textContent = "Willkommen"; subEl.textContent = "in der Botschaft von St. Anton am Arlberg"; }
+        else if (lang === 'fr') { titleEl.textContent = "Bienvenue"; subEl.textContent = "à l'ambassade de St. Anton am Arlberg"; }
+        else { titleEl.textContent = "Welcome"; subEl.textContent = "to the embassy of St. Anton am Arlberg"; }
+        titleEl.classList.remove('fade-out');
+        subEl.classList.remove('fade-out');
+      }, 500);
+    }
+
+    function setTodayLanguage(lang) {
+      const targets = [ document.getElementById('lbl-wind'), document.getElementById('lbl-humidity'), document.getElementById('lbl-rain'), document.getElementById('title-today'), document.getElementById('desc-today'), document.getElementById('val-temp'), document.getElementById('val-wind'), document.getElementById('val-humidity'), document.getElementById('val-rain') ];
+      fadeTranslate(targets, () => updateWeatherUI(lang));
+    }
+
+    function setForecastLanguage(lang) {
+      const targets = [ document.getElementById('day1-name'), document.getElementById('day1-desc'), document.getElementById('day1-max'), document.getElementById('day1-min'), document.getElementById('lbl-day1-max'), document.getElementById('lbl-day1-min'), document.getElementById('day2-name'), document.getElementById('day2-desc'), document.getElementById('day2-max'), document.getElementById('day2-min'), document.getElementById('lbl-day2-max'), document.getElementById('lbl-day2-min'), document.getElementById('day3-name'), document.getElementById('day3-desc'), document.getElementById('day3-max'), document.getElementById('day3-min'), document.getElementById('lbl-day3-max'), document.getElementById('lbl-day3-min') ];
+      fadeTranslate(targets, () => updateWeatherUI(lang));
+    }
+
+    function loadWebcamStream() {
+      const iframe = document.getElementById('webcam-iframe');
+      if (iframe.src !== FERATEL_STREAM_URL) iframe.src = FERATEL_STREAM_URL;
+      document.getElementById('bar-info').innerHTML = `<i class="fas fa-video"></i> Live Webcams &nbsp;&bull;&nbsp; St. Anton am Arlberg`;
+    }
+
+    function loadVideoStream() {
+      const video = document.getElementById('custom-mp4-video');
+      if (video) {
+        video.currentTime = 0;
+        video.play().catch(e => console.log("Lecture automatique bloquée ou erreur:", e));
+      }
+      document.getElementById('bar-info').innerHTML = `<i class="fas fa-video"></i> St. Anton am Arlberg`;
+    }
+
+    function restoreBarTemp() {
+      const tempVal = weatherData ? `${Math.round(weatherData.current.temperature_2m)} °C` : '-- °C';
+      document.getElementById('bar-info').innerHTML = `<i class="fas fa-temperature-low"></i> <span id="bar-temp">${tempVal}</span>`;
+    }
+
+    function isTimeBetween(startH, startM, endH, endM) {
+      const now = new Date();
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const startMinutes = startH * 60 + startM;
+      const endMinutes = endH * 60 + endM;
+      return currentMinutes >= startMinutes && currentMinutes < endMinutes;
+    }
+
+    const slides = [ document.getElementById('slideWelcome'), document.getElementById('slide1'), document.getElementById('slide2'), document.getElementById('slide3'), document.getElementById('slide4'), document.getElementById('slide5') ];
+    let step = 0;
+
+    function getNextStep(fromStep) {
+      let next = (fromStep + 1) % slides.length;
+      if (next === 3 && !isTimeBetween(6, 0, 20, 30)) {
+        return getNextStep(3);
+      }
+      if (next === 4 && !isTimeBetween(8, 0, 17, 0)) {
+        return getNextStep(4);
+      }
+      return next;
+    }
+
+    function transitionToNext(nextStep) {
+      const current = slides[step];
+      
+      // La slide actuelle glisse proprement vers la gauche
+      current.classList.remove('active');
+      current.classList.add('exit-left');
+
+      const prevIndex = step;
+      setTimeout(() => {
+        // Désactive la transition temporairement pour replacer la slide masquée à droite sans animation
+        slides[prevIndex].style.transition = 'none';
+        slides[prevIndex].classList.remove('exit-left');
+        void slides[prevIndex].offsetHeight; // Forcer le reflow
+        slides[prevIndex].style.transition = '';
+      }, 1200);
+
+      // La nouvelle slide arrive depuis la droite
+      step = nextStep;
+      slides[step].classList.add('active');
+      runSequence();
+    }
+
+    function runSequence() {
+      if (step === 0) {
+        setWelcomeLanguage('de');
+        setTimeout(() => setWelcomeLanguage('fr'), 5000);
+        setTimeout(() => setWelcomeLanguage('en'), 10000);
+        setTimeout(() => { transitionToNext(getNextStep(0)); }, 15000);
+      } else if (step === 1) {
+        setTodayLanguage('de');
+        setTimeout(() => setTodayLanguage('fr'), 5000);
+        setTimeout(() => setTodayLanguage('en'), 10000);
+        setTimeout(() => { transitionToNext(getNextStep(1)); }, 15000);
+      } else if (step === 2) {
+        setForecastLanguage('de');
+        setTimeout(() => setForecastLanguage('fr'), 5000);
+        setTimeout(() => setForecastLanguage('en'), 10000);
+        setTimeout(() => { transitionToNext(getNextStep(2)); }, 15000);
+      } else if (step === 3) {
+        loadWebcamStream();
+        setTimeout(() => { transitionToNext(getNextStep(3)); }, 53000);
+      } else if (step === 4) {
+        renderLiftMarkers();
+        document.getElementById('bar-info').innerHTML = `<i class="fas fa-map-marked-alt"></i> Interaktive Karte &nbsp;&bull;&nbsp; Sommer-Bergbahnen`;
+        setTimeout(() => { transitionToNext(getNextStep(4)); }, 20000);
+      } else if (step === 5) {
+        loadVideoStream();
+        setTimeout(() => {
+          restoreBarTemp();
+          const video = document.getElementById('custom-mp4-video');
+          if (video) video.pause();
+          transitionToNext(getNextStep(5));
+        }, 45000);
+      }
+    }
+
+    fetchWeatherData();
+    setInterval(fetchWeatherData, 600000);
+    runSequence();
+  </script>
+</body>
+</html>
