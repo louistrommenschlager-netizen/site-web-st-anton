@@ -5,6 +5,8 @@
   <title>Affichage TV - Carspach & St. Anton</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Script pour lire le flux vidéo HLS de la webcam -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   
   <style>
     * { 
@@ -143,7 +145,6 @@
 
     /* SLIDE 3 : WEBCAM & SLIDE 5 : VIDÉO */
     .webcam-container { width: 100%; height: 100%; background: #000; position: relative; overflow: hidden; }
-    .webcam-iframe { width: 100%; height: calc(100% + 70px); border: none; position: absolute; top: 0; left: 0; }
     .custom-video { width: 100%; height: 100%; object-fit: cover; border: none; position: absolute; top: 0; left: 0; }
 
     /* SLIDE CARTE DES REMONTÉES ÉTÉ */
@@ -315,7 +316,7 @@
 
     <div class="slide" id="slide3">
       <div class="webcam-container">
-        <iframe id="webcam-iframe" class="webcam-iframe" referrerpolicy="no-referrer" src="about:blank"></iframe>
+        <video id="webcam-stream-player" class="custom-video" autoplay muted playsinline></video>
       </div>
     </div>
 
@@ -343,7 +344,7 @@
   </footer>
 
   <script>
-    const FERATEL_STREAM_URL = "https://webtv.feratel.com/webtv/?design=v3&cam=5690&lg=de";
+    const FERATEL_HLS_URL = "https://webtv.feratel.com/webtv/5690/stream.m3u8";
 
     /* LISTE DES 5 VIDÉOS GITHUB */
     const videoList = [
@@ -355,6 +356,7 @@
     ];
     let currentVideoIndex = 0;
     let videoTimeout = null;
+    let hlsInstance = null;
 
     const SVG_CABLECAR = `<svg viewBox="0 0 24 24"><path d="M19 10h-2V7h1a1 1 0 0 0 0-2H6a1 1 0 0 0 0 2h1v3H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-8-3h2v3h-2V7zm-6 5h4v4H5v-4zm14 4h-4v-4h4v4z"/></svg>`;
     const SVG_CHAIRLIFT = `<svg viewBox="0 0 24 24"><path d="M4 3l16 4M12 5v7m0 0h5a2 2 0 0 1 2 2v2a1 1 0 0 1-1 1h-6v3h3a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2h3v-3H9a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h3z"/></svg>`;
@@ -458,7 +460,6 @@
       const current = weatherData.current;
       const daily = weatherData.daily;
 
-      // Valeurs
       document.getElementById('val-temp').textContent = `${Math.round(current.temperature_2m)}°C`;
       const barTempEl = document.getElementById('bar-temp');
       if (barTempEl) barTempEl.textContent = `${Math.round(current.temperature_2m)} °C`;
@@ -468,7 +469,6 @@
       document.getElementById('icon-today').className = `fas ${getWeatherIcon(current.weather_code)}`;
       document.getElementById('desc-today').textContent = getRichWeatherDesc(current.weather_code, current.temperature_2m, lang, 0);
 
-      // Libellés Météo Aujourd'hui
       if (lang === 'de') {
         document.getElementById('title-today').textContent = "Heute";
         document.getElementById('lbl-wind').textContent = "Wind";
@@ -486,7 +486,6 @@
         document.getElementById('lbl-rain').textContent = "Precipitation";
       }
 
-      // Prévisions 3 jours
       for (let i = 1; i <= 3; i++) {
         let dayTitle = (i === 1) ? ((lang === 'de') ? "Morgen" : (lang === 'fr' ? "Demain" : "Tomorrow")) : getDayNameOffset(i, lang);
         document.getElementById(`day${i}-name`).textContent = dayTitle;
@@ -532,10 +531,24 @@
     }
 
     function loadWebcamStream() {
-      const iframe = document.getElementById('webcam-iframe');
-      // Forcer le rechargement complet de la séquence vidéo de la webcam
-      iframe.src = FERATEL_STREAM_URL + "&autoplay=1&refresh=1&t=" + new Date().getTime();
+      const video = document.getElementById('webcam-stream-player');
       document.getElementById('bar-info').innerHTML = `<i class="fas fa-video"></i> Live Webcams &nbsp;&bull;&nbsp; St. Anton am Arlberg`;
+
+      if (!hlsInstance) {
+        if (Hls.isSupported()) {
+          hlsInstance = new Hls();
+          hlsInstance.loadSource(FERATEL_HLS_URL);
+          hlsInstance.attachMedia(video);
+          hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
+            video.play().catch(e => console.log("Erreur webcam:", e));
+          });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = FERATEL_HLS_URL;
+          video.play().catch(e => console.log("Erreur webcam:", e));
+        }
+      } else {
+        video.play().catch(e => console.log("Erreur webcam:", e));
+      }
     }
 
     function loadVideoStream() {
@@ -553,7 +566,6 @@
 
         video.addEventListener('ended', onVideoEnded);
 
-        // Temps maximal de sécurité porté à 2 minutes (120 000 ms)
         videoTimeout = setTimeout(() => {
           video.removeEventListener('ended', onVideoEnded);
           finishVideoSlide();
@@ -636,7 +648,8 @@
       } else if (step === 3) {
         loadWebcamStream();
         setTimeout(() => { 
-          document.getElementById('webcam-iframe').src = "about:blank";
+          const webcamVideo = document.getElementById('webcam-stream-player');
+          if (webcamVideo) webcamVideo.pause();
           transitionToNext(getNextStep(3)); 
         }, 53000);
       } else if (step === 4) {
