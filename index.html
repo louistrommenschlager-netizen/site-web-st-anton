@@ -343,13 +343,13 @@
   </footer>
 
   <script>
-    /* LISTE DES WEBCAMS (Changement d'URL à chaque passage) */
+    /* LISTE DES WEBCAMS AVEC NOMS ET ALTITUDES */
     const webcamList = [
-      { name: "Valluga", url: "https://webtv.feratel.com/webtv/?design=v3&cam=5690&lg=de" },
-      { name: "Galzig", url: "https://webtv.feratel.com/webtv/?design=v3&cam=5691&lg=de" },
-      { name: "Rendl", url: "https://webtv.feratel.com/webtv/?design=v3&cam=5692&lg=de" },
-      { name: "Gampen", url: "https://webtv.feratel.com/webtv/?design=v3&cam=5693&lg=de" },
-      { name: "Nasserein", url: "https://webtv.feratel.com/webtv/?design=v3&cam=5694&lg=de" }
+      { name: "Valluga", altitude: "2 811 m", url: "https://webtv.feratel.com/webtv/?design=v3&cam=5690&lg=de" },
+      { name: "Galzig", altitude: "2 185 m", url: "https://webtv.feratel.com/webtv/?design=v3&cam=5691&lg=de" },
+      { name: "Rendl", altitude: "2 030 m", url: "https://webtv.feratel.com/webtv/?design=v3&cam=5692&lg=de" },
+      { name: "Gampen", altitude: "1 850 m", url: "https://webtv.feratel.com/webtv/?design=v3&cam=5693&lg=de" },
+      { name: "Nasserein", altitude: "1 290 m", url: "https://webtv.feratel.com/webtv/?design=v3&cam=5694&lg=de" }
     ];
     let currentWebcamIndex = 0;
 
@@ -541,7 +541,7 @@
       const activeWebcam = webcamList[currentWebcamIndex];
       
       iframe.src = activeWebcam.url;
-      document.getElementById('bar-info').innerHTML = `<i class="fas fa-video"></i> Live Webcam: ${activeWebcam.name} &nbsp;&bull;&nbsp; St. Anton am Arlberg`;
+      document.getElementById('bar-info').innerHTML = `<i class="fas fa-video"></i> ${activeWebcam.name} (${activeWebcam.altitude})`;
       
       currentWebcamIndex = (currentWebcamIndex + 1) % webcamList.length;
     }
@@ -655,6 +655,12 @@
       }
     }
 
+    fetchWeatherData();
+    setInterval(fetchWeatherData, 600000);
+    runSequence();
+  </script>
+</body>
+</html>
     fetchWeatherData();
     setInterval(fetchWeatherData, 600000);
     runSequence();
