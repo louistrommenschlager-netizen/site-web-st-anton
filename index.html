@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Affichage TV - Carspach & St. Anton</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -146,7 +146,7 @@
 
     /* SLIDE 1 : MÉTÉO DU JOUR - PANNEAUX LIQUID GLASS */
     .sidebar {
-      width: 32%;
+      width: 35%;
       background: rgba(15, 23, 42, 0.45);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
@@ -154,39 +154,39 @@
       flex-direction: column;
       justify-content: center;
       padding: 40px 30px 90px 30px;
-      gap: 40px;
+      gap: 35px;
       border-right: 1px solid rgba(255, 255, 255, 0.15);
       box-shadow: inset -1px 0 0 rgba(255,255,255,0.05);
     }
-    .metric .value { display: block; font-size: 2.3rem; font-weight: 800; line-height: 1.1; color: #f8fafc; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-    .metric .label { font-size: 1.2rem; font-weight: 700; color: rgba(255, 255, 255, 0.75); margin-top: 4px; display: block; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+    .metric .value { display: block; font-size: 2.2rem; font-weight: 800; line-height: 1.1; color: #f8fafc; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+    .metric .label { font-size: 1.1rem; font-weight: 700; color: rgba(255, 255, 255, 0.75); margin-top: 4px; display: block; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
 
     .today-main {
-      width: 68%;
+      width: 65%;
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 40px 20px 80px 20px;
-      gap: 50px;
+      gap: 40px;
       background: rgba(15, 23, 42, 0.3);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
     .today-header { 
-      font-size: 4.2rem; 
+      font-size: 4rem; 
       font-weight: 800; 
       background: linear-gradient(135deg, #ffffff 40%, #bae6fd 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
     }
-    .today-content { display: flex; align-items: center; justify-content: center; width: 90%; gap: 30px; }
+    .today-content { display: flex; align-items: center; justify-content: center; width: 95%; gap: 30px; }
     .today-left-box { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 15px; }
     .today-left-box i { font-size: 5.5rem; color: #38bdf8; filter: drop-shadow(0 0 20px rgba(56,189,248,0.7)); }
-    .today-left-box p { font-size: 1.5rem; font-weight: 700; max-width: 300px; line-height: 1.3; color: rgba(255,255,255,0.95); text-shadow: 0 2px 6px rgba(0,0,0,0.6); }
-    .divider-line { width: 1px; height: 120px; background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.4), transparent); }
+    .today-left-box p { font-size: 1.5rem; font-weight: 700; max-width: 320px; line-height: 1.3; color: rgba(255,255,255,0.95); text-shadow: 0 2px 6px rgba(0,0,0,0.6); }
+    .divider-line { width: 1px; height: 130px; background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.4), transparent); }
     .today-right-box { flex: 1; display: flex; justify-content: center; align-items: center; }
     .temp-display { font-size: 7.5rem; font-weight: 900; letter-spacing: -2px; text-shadow: 0 15px 30px rgba(0,0,0,0.6); }
 
@@ -207,28 +207,29 @@
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
     }
     .forecast-col:last-child { border-right: none; }
-    .forecast-col h3 { font-size: 2.8rem; font-weight: 800; margin-top: 10px; color: #f1f5f9; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+    .forecast-col h3 { font-size: 2.6rem; font-weight: 800; margin-top: 10px; color: #f1f5f9; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
     .forecast-col-mid { display: flex; flex-direction: column; align-items: center; gap: 15px; }
     .forecast-col-mid i { font-size: 4.5rem; color: #38bdf8; filter: drop-shadow(0 0 15px rgba(56,189,248,0.6)); }
     .forecast-col-mid p { font-size: 1.3rem; font-weight: 700; max-width: 240px; line-height: 1.3; color: rgba(255, 255, 255, 0.9); text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-    .forecast-col-bottom { width: 85%; margin-bottom: 20px; }
+    .forecast-col-bottom { width: 90%; margin-bottom: 20px; }
     .temp-row { display: flex; justify-content: space-around; font-size: 2.2rem; font-weight: 800; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
     .label-row { display: flex; justify-content: space-around; font-size: 1.1rem; font-weight: 700; color: rgba(255, 255, 255, 0.65); margin-top: 5px; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
 
     /* SLIDE 3 : CARTE PROPRE SANS BULLES */
     .clean-map-container {
       width: 100%;
-      height: 100%;
+      height: 100vh;
       position: relative;
       background-color: #050b14;
       overflow: hidden;
     }
     .clean-map-image {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: 100vh;
+      object-fit: contain; /* S'assure que la carte entière est visible et bien dimensionnée sur tablette */
       object-position: center center;
       display: block;
+      background-color: #050b14;
       filter: contrast(1.05) saturate(1.1);
     }
 
@@ -359,10 +360,47 @@
       50% { opacity: 0.35; transform: scale(0.97); }
     }
 
-    /* SLIDE 5 & 6 : WEBCAM ET VIDÉO */
-    .webcam-container { width: 100%; height: 100vh; background: #000; position: relative; overflow: hidden; }
-    .webcam-iframe { width: 100%; height: 100vh; border: none; position: absolute; top: 0; left: 0; }
-    .custom-video { width: 100%; height: 100vh; object-fit: cover; border: none; position: absolute; top: 0; left: 0; }
+    /* SLIDE 5 & 6 : WEBCAM ET VIDÉO PLEIN ÉCRAN OPTIMISÉ TABLETTE */
+    .webcam-container { 
+      width: 100%; 
+      height: 100vh; 
+      background: #000; 
+      position: relative; 
+      overflow: hidden; 
+    }
+    .webcam-iframe { 
+      width: 100%; 
+      height: 100vh; 
+      border: none; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+    }
+    .custom-video { 
+      width: 100%; 
+      height: 100vh; 
+      object-fit: cover; 
+      border: none; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+    }
+
+    /* MEDIA QUERIES SPÉCIFIQUES TABLETTES POUR ÉVITER LES ÉLÉMENTS TROP PETITS */
+    @media (max-width: 1024px) {
+      .welcome-title { font-size: 3.5rem; }
+      .welcome-subtitle { font-size: 1.8rem; padding: 0 20px; }
+      .today-header { font-size: 3.2rem; }
+      .temp-display { font-size: 6rem; }
+      .today-left-box i { font-size: 4.5rem; }
+      .today-left-box p { font-size: 1.3rem; }
+      .forecast-col h3 { font-size: 2.2rem; }
+      .forecast-col-mid i { font-size: 3.8rem; }
+      .forecast-col-mid p { font-size: 1.1rem; }
+      .temp-row { font-size: 1.8rem; }
+      .board-header { font-size: 2rem; }
+      .board-table th, .board-table td { font-size: 1.1rem; padding: 12px 14px; }
+    }
   </style>
 </head>
 <body>
@@ -478,7 +516,7 @@
       </div>
     </div>
 
-    <!-- 4. CARTE ANCIENNE PROPRE (SANS BULLES) -->
+    <!-- 4. CARTE AJUSTÉE POUR TABLETTE -->
     <div class="slide" id="slide3">
       <div class="clean-map-container">
         <img src="https://www.mountvacationmedia.com/media/skimaps/resort_9224_1_original.jpg?v=2" alt="Ski Arlberg Map" class="clean-map-image">
