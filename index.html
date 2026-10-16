@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Affichage TV - Carspach & St. Anton</title>
+  <title>Affichage TV - Carspach & Ski Arlberg</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
   
@@ -24,7 +24,7 @@
       position: relative; 
     }
 
-    /* IMAGES D'ARRIÈRE-PLAN MÉTÉO IMMERSIVES (CARSPACH) */
+    /* IMAGES D'ARRIÈRE-PLAN MÉTÉO */
     .weather-img-bg {
       position: absolute;
       top: 0;
@@ -33,20 +33,20 @@
       height: 100%;
       object-fit: cover;
       z-index: -1;
-      filter: blur(22px) brightness(0.55);
+      filter: blur(18px) brightness(0.8) contrast(1.1);
       transform: scale(1.1);
       pointer-events: none;
       transition: opacity 1.2s ease-in-out;
       opacity: 0;
     }
     .weather-img-bg.active {
-      opacity: 0.75;
+      opacity: 0.9;
     }
 
-    /* BANDEAU DU BAS FIXE - VRAI LIQUID GLASS AVEC ICÔNES LUMINEUSES */
+    /* BANDEAU DU BAS FIXE - LIQUID GLASS ARRONDI */
     .bottom-bar {
-      height: 65px; 
-      background: rgba(10, 15, 30, 0.45); 
+      height: 60px; 
+      background: rgba(10, 15, 30, 0.75); 
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       color: #ffffff;
@@ -57,11 +57,14 @@
       font-size: 1.2rem; 
       font-weight: 700;
       position: fixed; 
-      bottom: 0; 
-      width: 100%; 
+      bottom: 12px; 
+      left: 15px;
+      right: 15px;
+      width: calc(100vw - 30px); 
       z-index: 1000;
-      border-top: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 -10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
     }
     .bottom-bar i { 
       margin-right: 8px; 
@@ -124,7 +127,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 40px 40px 80px 40px;
+      padding: 40px 40px 90px 40px;
       gap: 20px;
     }
     .welcome-title { 
@@ -138,114 +141,200 @@
     .welcome-subtitle { 
       font-size: 2.2rem; 
       font-weight: 700; 
-      color: rgba(255, 255, 255, 0.9); 
+      color: rgba(255, 255, 255, 0.95); 
       max-width: 900px; 
       line-height: 1.3; 
       text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
 
-    /* SLIDE 1 : MÉTÉO DU JOUR - PANNEAUX LIQUID GLASS */
+    /* SLIDE 1 : MÉTÉO DU JOUR */
+    .weather-flex-wrapper {
+      width: calc(100vw - 30px);
+      height: calc(100vh - 95px);
+      margin: 15px auto;
+      display: flex;
+      gap: 15px;
+    }
     .sidebar {
-      width: 35%;
-      background: rgba(15, 23, 42, 0.45);
+      width: 33%;
+      height: 100%;
+      background: rgba(10, 15, 30, 0.65);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 40px 30px 90px 30px;
+      padding: 30px;
       gap: 35px;
-      border-right: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: inset -1px 0 0 rgba(255,255,255,0.05);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
     }
-    .metric .value { display: block; font-size: 2.2rem; font-weight: 800; line-height: 1.1; color: #f8fafc; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-    .metric .label { font-size: 1.1rem; font-weight: 700; color: rgba(255, 255, 255, 0.75); margin-top: 4px; display: block; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+    .metric .value { display: block; font-size: 2.2rem; font-weight: 800; line-height: 1.1; color: #f8fafc; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+    .metric .label { font-size: 1.1rem; font-weight: 700; color: rgba(255, 255, 255, 0.85); margin-top: 4px; display: block; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
 
     .today-main {
-      width: 65%;
+      width: 67%;
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 40px 20px 80px 20px;
-      gap: 40px;
-      background: rgba(15, 23, 42, 0.3);
+      padding: 30px 20px;
+      gap: 35px;
+      background: rgba(10, 15, 30, 0.5);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
     }
     .today-header { 
-      font-size: 4rem; 
+      font-size: 3.8rem; 
       font-weight: 800; 
       background: linear-gradient(135deg, #ffffff 40%, #bae6fd 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
     }
     .today-content { display: flex; align-items: center; justify-content: center; width: 95%; gap: 30px; }
     .today-left-box { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 15px; }
-    .today-left-box i { font-size: 5.5rem; color: #38bdf8; filter: drop-shadow(0 0 20px rgba(56,189,248,0.7)); }
-    .today-left-box p { font-size: 1.5rem; font-weight: 700; max-width: 320px; line-height: 1.3; color: rgba(255,255,255,0.95); text-shadow: 0 2px 6px rgba(0,0,0,0.6); }
-    .divider-line { width: 1px; height: 130px; background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.4), transparent); }
+    .today-left-box i { font-size: 5rem; color: #38bdf8; filter: drop-shadow(0 0 20px rgba(56,189,248,0.9)); }
+    .today-left-box p { font-size: 1.4rem; font-weight: 700; max-width: 320px; line-height: 1.3; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.8); }
+    .divider-line { width: 1px; height: 120px; background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5), transparent); }
     .today-right-box { flex: 1; display: flex; justify-content: center; align-items: center; }
-    .temp-display { font-size: 7.5rem; font-weight: 900; letter-spacing: -2px; text-shadow: 0 15px 30px rgba(0,0,0,0.6); }
+    .temp-display { font-size: 7rem; font-weight: 900; letter-spacing: -2px; text-shadow: 0 15px 30px rgba(0,0,0,0.8); }
 
     /* SLIDE 2 : PRÉVISIONS 3 JOURS */
-    .forecast-full { width: 100%; height: 100%; display: flex; }
+    .forecast-full { 
+      width: calc(100vw - 30px); 
+      height: calc(100vh - 95px); 
+      margin: 15px auto; 
+      display: flex; 
+      gap: 15px; 
+      align-items: center; 
+    }
     .forecast-col { 
       flex: 1; 
+      height: 100%;
       display: flex; 
       flex-direction: column; 
       justify-content: space-between; 
       align-items: center; 
-      padding: 40px 15px 80px 15px; 
-      background: rgba(15, 23, 42, 0.35);
+      padding: 30px 15px; 
+      background: rgba(10, 15, 30, 0.55);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
-      border-right: 1px solid rgba(255, 255, 255, 0.12); 
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.2); 
       text-align: center; 
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
     }
-    .forecast-col:last-child { border-right: none; }
-    .forecast-col h3 { font-size: 2.6rem; font-weight: 800; margin-top: 10px; color: #f1f5f9; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-    .forecast-col-mid { display: flex; flex-direction: column; align-items: center; gap: 15px; }
-    .forecast-col-mid i { font-size: 4.5rem; color: #38bdf8; filter: drop-shadow(0 0 15px rgba(56,189,248,0.6)); }
-    .forecast-col-mid p { font-size: 1.3rem; font-weight: 700; max-width: 240px; line-height: 1.3; color: rgba(255, 255, 255, 0.9); text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-    .forecast-col-bottom { width: 90%; margin-bottom: 20px; }
-    .temp-row { display: flex; justify-content: space-around; font-size: 2.2rem; font-weight: 800; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
-    .label-row { display: flex; justify-content: space-around; font-size: 1.1rem; font-weight: 700; color: rgba(255, 255, 255, 0.65); margin-top: 5px; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+    .forecast-col h3 { font-size: 2.4rem; font-weight: 800; margin-top: 5px; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+    .forecast-col-mid { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .forecast-col-mid i { font-size: 4rem; color: #38bdf8; filter: drop-shadow(0 0 15px rgba(56,189,248,0.8)); }
+    .forecast-col-mid p { font-size: 1.2rem; font-weight: 700; max-width: 240px; line-height: 1.3; color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.6); }
+    .forecast-col-bottom { width: 90%; margin-bottom: 10px; }
+    .temp-row { display: flex; justify-content: space-around; font-size: 2rem; font-weight: 800; text-shadow: 0 2px 6px rgba(0,0,0,0.6); }
+    .label-row { display: flex; justify-content: space-around; font-size: 1rem; font-weight: 700; color: rgba(255, 255, 255, 0.75); margin-top: 4px; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
 
-    /* SLIDE 3 : CARTE PROPRE SANS BULLES */
-    .clean-map-container {
-      width: 100%;
-      height: 100vh;
-      position: relative;
-      background-color: #050b14;
-      overflow: hidden;
-    }
-    .clean-map-image {
-      width: 100%;
-      height: 100vh;
-      object-fit: contain; /* S'assure que la carte entière est visible et bien dimensionnée sur tablette */
-      object-position: center center;
-      display: block;
-      background-color: #050b14;
-      filter: contrast(1.05) saturate(1.1);
-    }
-
-    /* SLIDE 4 : TABLEAU DES REMONTÉES - STYLE LIQUID GLASS & LAYOUT FIXE */
-    .lifts-board-container {
-      width: 100%;
-      height: 100%;
-      padding: 30px 40px 85px 40px;
+    /* SLIDE 4 : HAUTEUR DE NEIGE PAR SECTEUR */
+    .snow-container {
+      width: calc(100vw - 30px);
+      height: calc(100vh - 95px);
+      margin: 15px auto;
+      padding: 30px;
       display: flex;
       flex-direction: column;
-      background: rgba(10, 18, 32, 0.55);
+      background: rgba(10, 18, 32, 0.8);
       backdrop-filter: blur(25px);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .snow-header {
+      font-size: 2.3rem;
+      font-weight: 800;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: #f8fafc;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    .snow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      flex-grow: 1;
+    }
+    .snow-card {
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+    }
+    .snow-card h4 { font-size: 1.8rem; font-weight: 800; color: #93c5fd; }
+    .snow-card .alt { font-size: 1rem; color: rgba(255, 255, 255, 0.7); font-weight: 700; }
+    .snow-card .depth { font-size: 3.5rem; font-weight: 900; color: #ffffff; text-shadow: 0 4px 15px rgba(56,189,248,0.5); }
+    
+    /* BADGES CLIGNOTANTS COLORÉS POUR LA NEIGE */
+    .snow-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      animation: blink-badge 1.2s infinite ease-in-out;
+    }
+    .snow-badge.no-snow {
+      background-color: rgba(239, 68, 68, 0.25);
+      color: #f87171;
+      border: 1px solid rgba(248, 113, 113, 0.6);
+      box-shadow: 0 0 20px rgba(248, 113, 113, 0.4);
+    }
+    .snow-badge.snowing {
+      background-color: rgba(245, 158, 11, 0.25);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.6);
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+    }
+    .snow-badge.good-snow {
+      background-color: rgba(46, 204, 113, 0.25);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.6);
+      box-shadow: 0 0 20px rgba(74, 222, 128, 0.4);
+    }
+
+    /* SLIDE 5 : TABLEAU DES REMONTÉES */
+    .lifts-board-container {
+      width: calc(100vw - 30px);
+      height: calc(100vh - 95px);
+      margin: 15px auto;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      background: rgba(10, 18, 32, 0.8);
+      backdrop-filter: blur(25px);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
     .board-header {
-      height: 55px;
-      font-size: 2.4rem;
+      height: 50px;
+      font-size: 2.2rem;
       font-weight: 800;
       margin-bottom: 15px;
       display: flex;
@@ -256,7 +345,6 @@
       text-shadow: 0 5px 15px rgba(0,0,0,0.5);
       overflow: hidden;
     }
-    .board-header i { color: #38bdf8; filter: drop-shadow(0 0 10px rgba(56,189,248,0.7)); }
     #board-title-text {
       white-space: nowrap;
       overflow: hidden;
@@ -267,15 +355,16 @@
       width: 100%;
       flex-grow: 1;
       overflow-y: auto; 
-      background: rgba(15, 23, 42, 0.4);
+      background: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(30px);
       -webkit-backdrop-filter: blur(30px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
       position: relative;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      will-change: scroll-position;
     }
     .table-wrapper::-webkit-scrollbar {
       display: none;
@@ -296,15 +385,15 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      background: rgba(8, 15, 28, 0.9);
+      background: rgba(8, 15, 28, 0.95);
       backdrop-filter: blur(20px);
     }
     .board-table th {
-      padding: 15px 18px;
+      padding: 14px 18px;
       text-align: left;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 800;
-      color: rgba(255, 255, 255, 0.9);
+      color: rgba(255, 255, 255, 0.95);
       letter-spacing: 1px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       white-space: nowrap;
@@ -313,10 +402,10 @@
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
     .board-table td {
-      padding: 15px 18px;
-      font-size: 1.3rem;
+      padding: 14px 18px;
+      font-size: 1.2rem;
       font-weight: 700;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       color: #ffffff;
       white-space: nowrap;
       overflow: hidden;
@@ -324,13 +413,14 @@
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
     .board-table tr:nth-child(even) {
-      background-color: rgba(255, 255, 255, 0.02);
+      background-color: rgba(255, 255, 255, 0.03);
     }
     
-    /* STATUTS CLIGNOTANTS - BADGES AJUSTÉS */
+    /* STATUTS CLIGNOTANTS DES REMONTÉES */
     .status-badge {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       padding: 4px 10px;
       border-radius: 30px;
@@ -338,21 +428,23 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      width: 170px;
+      text-align: center;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       animation: blink-badge 1.2s infinite ease-in-out;
     }
     .status-badge.open {
-      background-color: rgba(46, 204, 113, 0.2);
+      background-color: rgba(46, 204, 113, 0.25);
       color: #4ade80;
-      border: 1px solid rgba(74, 222, 128, 0.5);
-      box-shadow: 0 0 20px rgba(74, 222, 128, 0.35);
+      border: 1px solid rgba(74, 222, 128, 0.6);
+      box-shadow: 0 0 20px rgba(74, 222, 128, 0.4);
     }
     .status-badge.closed {
-      background-color: rgba(239, 68, 68, 0.2);
+      background-color: rgba(239, 68, 68, 0.25);
       color: #f87171;
-      border: 1px solid rgba(248, 113, 113, 0.5);
-      box-shadow: 0 0 20px rgba(248, 113, 113, 0.35);
+      border: 1px solid rgba(248, 113, 113, 0.6);
+      box-shadow: 0 0 20px rgba(248, 113, 113, 0.4);
     }
 
     @keyframes blink-badge {
@@ -360,33 +452,28 @@
       50% { opacity: 0.35; transform: scale(0.97); }
     }
 
-    /* SLIDE 5 & 6 : WEBCAM ET VIDÉO PLEIN ÉCRAN OPTIMISÉ TABLETTE */
-    .webcam-container { 
-      width: 100%; 
-      height: 100vh; 
-      background: #000; 
-      position: relative; 
-      overflow: hidden; 
+    /* SLIDE 6 : CARTE SKI ARLBERG CENTRÉE VERS LE BAS SUR ST. ANTON */
+    .clean-map-container {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      background-color: #050b14;
+      overflow: hidden;
     }
-    .webcam-iframe { 
-      width: 100%; 
-      height: 100vh; 
-      border: none; 
-      position: absolute; 
-      top: 0; 
-      left: 0; 
-    }
-    .custom-video { 
-      width: 100%; 
-      height: 100vh; 
-      object-fit: cover; 
-      border: none; 
-      position: absolute; 
-      top: 0; 
-      left: 0; 
+    .clean-map-image {
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+      object-position: center bottom;
+      display: block;
+      filter: contrast(1.05) saturate(1.1);
     }
 
-    /* MEDIA QUERIES SPÉCIFIQUES TABLETTES POUR ÉVITER LES ÉLÉMENTS TROP PETITS */
+    /* WEBCAM ET VIDÉO */
+    .webcam-container { width: 100%; height: 100vh; background: #000; position: relative; overflow: hidden; }
+    .webcam-iframe { width: 100%; height: 100vh; border: none; position: absolute; top: 0; left: 0; }
+    .custom-video { width: 100%; height: 100vh; object-fit: cover; border: none; position: absolute; top: 0; left: 0; }
+
     @media (max-width: 1024px) {
       .welcome-title { font-size: 3.5rem; }
       .welcome-subtitle { font-size: 1.8rem; padding: 0 20px; }
@@ -400,12 +487,13 @@
       .temp-row { font-size: 1.8rem; }
       .board-header { font-size: 2rem; }
       .board-table th, .board-table td { font-size: 1.1rem; padding: 12px 14px; }
+      .snow-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
 
-  <!-- IMAGES D'ARRIÈRE-PLAN MÉTÉO IMMERSIVES (CARSPACH) -->
+  <!-- IMAGES MÉTÉO IMMERSIVES -->
   <img class="weather-img-bg" id="img-sunny" src="https://media.istockphoto.com/id/491701259/fr/photo/bleu-ciel-avec-soleil.jpg?s=612x612&w=0&k=20&c=pcOsXjBU2W4TX9CMKpUWE5k5FjXU1Qq3znYtrImZbnc" alt="Grand soleil">
   <img class="weather-img-bg" id="img-partly" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgdyTu067Q9DPniKfcm5RnDa3tkO6c2yZOPVH_vOBpuSVLUb-NbGNTWog&s=10" alt="Ensoleillé avec nuages">
   <img class="weather-img-bg" id="img-cloudy" src="https://i.pinimg.com/474x/24/06/94/240694f5509f69f851cdfa5187cf96c0.jpg" alt="Nuageux">
@@ -414,7 +502,7 @@
 
   <div class="viewport">
 
-    <!-- 1. ACCUEIL -->
+    <!-- 0. ACCUEIL -->
     <div class="slide active" id="slideWelcome">
       <div class="welcome-container">
         <h1 class="welcome-title fade-text" id="welcome-title">Willkommen</h1>
@@ -422,43 +510,45 @@
       </div>
     </div>
 
-    <!-- 2. MÉTÉO DU JOUR -->
-    <div class="slide" id="slide1">
-      <aside class="sidebar">
-        <div class="metric">
-          <span class="value fade-text" id="val-wind">-- km/h</span>
-          <span class="label fade-text" id="lbl-wind">Wind</span>
-        </div>
-        <div class="metric">
-          <span class="value fade-text" id="val-humidity">-- %</span>
-          <span class="label fade-text" id="lbl-humidity">Luftfeuchtigkeit</span>
-        </div>
-        <div class="metric">
-          <span class="value fade-text" id="val-rain">-- mm</span>
-          <span class="label fade-text" id="lbl-rain">Niederschlag</span>
-        </div>
-      </aside>
-
-      <div class="today-main">
-        <h2 id="title-today" class="today-header fade-text">Heute</h2>
-        
-        <div class="today-content">
-          <div class="today-left-box">
-            <i id="icon-today" class="fas fa-sun"></i>
-            <p id="desc-today" class="fade-text">Wird geladen...</p>
+    <!-- 1. MÉTÉO DU JOUR (ACTUELLE) -->
+    <div class="slide" id="slideToday">
+      <div class="weather-flex-wrapper">
+        <aside class="sidebar">
+          <div class="metric">
+            <span class="value fade-text" id="val-wind">-- km/h</span>
+            <span class="label fade-text" id="lbl-wind">Wind</span>
           </div>
+          <div class="metric">
+            <span class="value fade-text" id="val-humidity">-- %</span>
+            <span class="label fade-text" id="lbl-humidity">Luftfeuchtigkeit</span>
+          </div>
+          <div class="metric">
+            <span class="value fade-text" id="val-rain">-- mm</span>
+            <span class="label fade-text" id="lbl-rain">Niederschlag</span>
+          </div>
+        </aside>
+
+        <div class="today-main">
+          <h2 id="title-today" class="today-header fade-text">Heute</h2>
           
-          <div class="divider-line"></div>
-          
-          <div class="today-right-box">
-            <div class="temp-display fade-text" id="val-temp">--°C</div>
+          <div class="today-content">
+            <div class="today-left-box">
+              <i id="icon-today" class="fas fa-sun"></i>
+              <p id="desc-today" class="fade-text">Wird geladen...</p>
+            </div>
+            
+            <div class="divider-line"></div>
+            
+            <div class="today-right-box">
+              <div class="temp-display fade-text" id="val-temp">--°C</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 3. PRÉVISIONS 3 JOURS -->
-    <div class="slide" id="slide2">
+    <!-- 2. PRÉVISIONS MÉTÉO 3 JOURS -->
+    <div class="slide" id="slideForecast">
       <div class="forecast-full">
         <div class="forecast-col">
           <h3 id="day1-name" class="fade-text">Morgen</h3>
@@ -516,19 +606,67 @@
       </div>
     </div>
 
-    <!-- 4. CARTE AJUSTÉE POUR TABLETTE -->
-    <div class="slide" id="slide3">
-      <div class="clean-map-container">
-        <img src="https://www.mountvacationmedia.com/media/skimaps/resort_9224_1_original.jpg?v=2" alt="Ski Arlberg Map" class="clean-map-image">
+    <!-- 3. WEBCAM LIVE -->
+    <div class="slide" id="slideWebcam">
+      <div class="webcam-container">
+        <iframe id="webcam-iframe" class="webcam-iframe" referrerpolicy="no-referrer" src="about:blank"></iframe>
       </div>
     </div>
 
-    <!-- 5. TABLEAU DÉFILANT DES REMONTÉES -->
-    <div class="slide" id="slide4">
+    <!-- 4. TABLEAU DE NEIGE (RAPPORT NEIGE) -->
+    <div class="slide" id="slideSnow">
+      <div class="snow-container">
+        <div class="snow-header">
+          <i class="fas fa-snowflake" style="color:#38bdf8;"></i> 
+          <span id="snow-title-text" class="fade-text">Schneehöhen – St. Anton am Arlberg</span>
+        </div>
+        <div class="snow-grid">
+          <div class="snow-card">
+            <h4>Valluga</h4>
+            <span class="alt">2 811 m</span>
+            <div class="depth" id="depth-valluga">0 cm</div>
+            <span class="snow-badge no-snow fade-text" id="badge-valluga"><i class="fas fa-times-circle"></i> Kein Schnee</span>
+          </div>
+          <div class="snow-card">
+            <h4>Galzig</h4>
+            <span class="alt">2 185 m</span>
+            <div class="depth" id="depth-galzig">0 cm</div>
+            <span class="snow-badge no-snow fade-text" id="badge-galzig"><i class="fas fa-times-circle"></i> Kein Schnee</span>
+          </div>
+          <div class="snow-card">
+            <h4>Gampen</h4>
+            <span class="alt">1 850 m</span>
+            <div class="depth" id="depth-gampen">0 cm</div>
+            <span class="snow-badge no-snow fade-text" id="badge-gampen"><i class="fas fa-times-circle"></i> Kein Schnee</span>
+          </div>
+          <div class="snow-card">
+            <h4>Rendl</h4>
+            <span class="alt">2 030 m</span>
+            <div class="depth" id="depth-rendl">0 cm</div>
+            <span class="snow-badge no-snow fade-text" id="badge-rendl"><i class="fas fa-times-circle"></i> Kein Schnee</span>
+          </div>
+          <div class="snow-card">
+            <h4>Kapall</h4>
+            <span class="alt">2 330 m</span>
+            <div class="depth" id="depth-kapall">0 cm</div>
+            <span class="snow-badge no-snow fade-text" id="badge-kapall"><i class="fas fa-times-circle"></i> Kein Schnee</span>
+          </div>
+          <div class="snow-card">
+            <h4>St. Anton Tal</h4>
+            <span class="alt">1 304 m</span>
+            <div class="depth" id="depth-tal">0 cm</div>
+            <span class="snow-badge no-snow fade-text" id="badge-tal"><i class="fas fa-times-circle"></i> Kein Schnee</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. TABLEAU DÉFILANT DES TÉLÉPHÉRIQUES -->
+    <div class="slide" id="slideLifts">
       <div class="lifts-board-container">
         <div class="board-header">
-          <i class="fas fa-list-alt"></i> 
-          <span id="board-title-text" class="fade-text">Bergbahnen Status – Ski Arlberg</span>
+          <i class="fas fa-list-alt" style="color:#38bdf8;"></i>
+          <span id="board-title-text" class="fade-text">Ski Arlberg – Alle Bergbahnen (St. Anton, Lech, Zürs, Warth, Stuben)</span>
         </div>
         <div class="table-wrapper" id="table-scroll-container">
           <table class="board-table">
@@ -536,7 +674,7 @@
               <tr>
                 <th id="th-sector" class="fade-text">Anlage / Sektor</th>
                 <th id="th-type" class="fade-text">Typ</th>
-                <th id="th-hours" class="fade-text">Öffnungszeiten</th>
+                <th id="th-hours" class="fade-text">Betriebszeiten</th>
                 <th id="th-status" class="fade-text">Status</th>
               </tr>
             </thead>
@@ -548,15 +686,15 @@
       </div>
     </div>
 
-    <!-- 6. WEBCAM LIVE -->
-    <div class="slide" id="slide5">
-      <div class="webcam-container">
-        <iframe id="webcam-iframe" class="webcam-iframe" referrerpolicy="no-referrer" src="about:blank"></iframe>
+    <!-- 6. CARTE SKI ARLBERG -->
+    <div class="slide" id="slideMap">
+      <div class="clean-map-container">
+        <img src="https://cdn.indebergen.nl/media/gx4b5o5d/ski-arlberg-pistenplan.jpg" alt="Ski Arlberg Pistenplan" class="clean-map-image">
       </div>
     </div>
 
-    <!-- 7. VIDÉO GITHUB -->
-    <div class="slide" id="slide6">
+    <!-- 7. VIDÉOS LIVE -->
+    <div class="slide" id="slideVideo">
       <div class="webcam-container">
         <video id="custom-mp4-video" class="custom-video" autoplay muted playsinline src=""></video>
       </div>
@@ -592,8 +730,79 @@
     let currentVideoIndex = 0;
     let videoTimeout = null;
 
-    /* REMONTÉES : ST. ANTON, ST. CHRISTOPH, STUBEN / ALBONA */
+    /* HAUTEURS DE NEIGE PAR SECTEUR (CM) */
+    const snowData = {
+      valluga: 0,
+      galzig: 0,
+      gampen: 0,
+      rendl: 0,
+      kapall: 0,
+      tal: 0
+    };
+
+    /* MÉTÉO ST. ANTON EN DIRECT POUR DÉTECTER LA NEIGE EN COURS */
+    let stAntonIsSnowing = false;
+    async function fetchStAntonWeather() {
+      try {
+        const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=47.1297&longitude=10.2682&current=weather_code&timezone=Europe%2FVienna');
+        const data = await response.json();
+        const code = data.current.weather_code;
+        stAntonIsSnowing = (code >= 71 && code <= 77) || (code >= 85 && code <= 86);
+      } catch (err) {
+        console.error("Erreur météo St. Anton:", err);
+      }
+    }
+    fetchStAntonWeather();
+    setInterval(fetchStAntonWeather, 300000);
+
+    /* RENDER DYNAMIQUE DES BADGES DE NEIGE TRILINGUES */
+    function updateSnowUI(lang = 'de') {
+      const sectors = [
+        { id: 'valluga', depth: snowData.valluga },
+        { id: 'galzig', depth: snowData.galzig },
+        { id: 'gampen', depth: snowData.gampen },
+        { id: 'rendl', depth: snowData.rendl },
+        { id: 'kapall', depth: snowData.kapall },
+        { id: 'tal', depth: snowData.tal }
+      ];
+
+      const titleTarget = document.getElementById('snow-title-text');
+      const badgeTargets = sectors.map(s => document.getElementById(`badge-${s.id}`));
+      const allFadeTargets = [titleTarget, ...badgeTargets];
+
+      fadeTranslate(allFadeTargets, () => {
+        if (lang === 'de') titleTarget.textContent = "Schneehöhen – St. Anton am Arlberg";
+        else if (lang === 'fr') titleTarget.textContent = "Hauteurs de neige – St. Anton am Arlberg";
+        else titleTarget.textContent = "Snow Depths – St. Anton am Arlberg";
+
+        sectors.forEach(s => {
+          const depthEl = document.getElementById(`depth-${s.id}`);
+          const badgeEl = document.getElementById(`badge-${s.id}`);
+          
+          depthEl.textContent = `${s.depth} cm`;
+
+          badgeEl.className = 'snow-badge fade-text';
+
+          if (stAntonIsSnowing) {
+            badgeEl.classList.add('snowing');
+            let text = (lang === 'de' ? "Schneefall" : lang === 'fr' ? "Neige en cours" : "Snowing");
+            badgeEl.innerHTML = `<i class="fas fa-snowflake"></i> ${text}`;
+          } else if (s.depth > 0) {
+            badgeEl.classList.add('good-snow');
+            let text = (lang === 'de' ? "Gut befahrbar" : lang === 'fr' ? "Enneigé" : "Good snow");
+            badgeEl.innerHTML = `<i class="fas fa-check-circle"></i> ${text}`;
+          } else {
+            badgeEl.classList.add('no-snow');
+            let text = (lang === 'de' ? "Kein Schnee" : lang === 'fr' ? "Pas de neige" : "No snow");
+            badgeEl.innerHTML = `<i class="fas fa-times-circle"></i> ${text}`;
+          }
+        });
+      });
+    }
+
+    /* LISTE COMPLÈTE DES REMONTÉES DE TOUT LE DOMAINE SKI ARLBERG */
     const liftsBoardData = [
+      /* St. Anton / St. Christoph / Stuben */
       { name: "Galzigbahn", sector: "St. Anton", type: "Funitel", openH: 8, openM: 30, closeH: 16, closeM: 30 },
       { name: "Valluga I", sector: "St. Anton", type: "Pendelbahn", openH: 8, openM: 40, closeH: 16, closeM: 0 },
       { name: "Valluga II", sector: "St. Anton", type: "Pendelbahn", openH: 8, openM: 40, closeH: 16, closeM: 20 },
@@ -601,33 +810,43 @@
       { name: "Osthangbahn", sector: "St. Anton", type: "Sesselbahn 8er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
       { name: "Tanzbödenbahn", sector: "St. Anton", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
       { name: "Zammermoosbahn", sector: "St. Anton", type: "Sesselbahn 4er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      
       { name: "Gampenbahn", sector: "St. Anton", type: "Sesselbahn 6er", openH: 8, openM: 15, closeH: 16, closeM: 15 },
       { name: "Kapallbahn", sector: "St. Anton", type: "Sesselbahn 6er", openH: 8, openM: 30, closeH: 16, closeM: 0 },
       { name: "Nassereinbahn", sector: "St. Anton", type: "Gondelbahn", openH: 8, openM: 30, closeH: 16, closeM: 30 },
       { name: "Fangbahn", sector: "St. Anton", type: "Sesselbahn 4er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
       { name: "Mattunbahn", sector: "St. Anton", type: "Sesselbahn 4er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-
       { name: "Rendlbahn", sector: "St. Anton Rendl", type: "Gondelbahn 8er", openH: 8, openM: 30, closeH: 16, closeM: 30 },
       { name: "Gampbergbahn", sector: "St. Anton Rendl", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Riffelbahn I", sector: "St. Anton Rendl", type: "Sesselbahn 2er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Riffelbahn II", sector: "St. Anton Rendl", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Maassbahn", sector: "St. Anton Rendl", type: "Sesselbahn 2er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-
+      { name: "Riffelbahn I & II", sector: "St. Anton Rendl", type: "Sesselbahn", openH: 8, openM: 45, closeH: 16, closeM: 15 },
       { name: "St. Christophbahn", sector: "St. Christoph", type: "Sesselbahn 4er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Maienseelift I & II", sector: "St. Christoph", type: "Schlepplift", openH: 9, openM: 0, closeH: 16, closeM: 30 },
-
       { name: "Flexenbahn", sector: "Alpe Rauz", type: "EUB 10er", openH: 8, openM: 30, closeH: 16, closeM: 0 },
-      { name: "Albonabahn I", sector: "Stuben", type: "EUB 8er", openH: 8, openM: 45, closeH: 16, closeM: 0 },
-      { name: "Albonabahn II", sector: "Stuben", type: "EUB 8er", openH: 8, openM: 45, closeH: 16, closeM: 0 },
-      { name: "Albonagratbahn", sector: "Stuben", type: "Sesselbahn 2er", openH: 8, openM: 45, closeH: 16, closeM: 0 },
-      { name: "Rauzban I & II", sector: "Alpe Rauz", type: "EUB 10er", openH: 8, openM: 30, closeH: 16, closeM: 0 },
-      { name: "Valfagehrbahn", sector: "Alpe Rauz", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 }
+      { name: "Albonabahn I & II", sector: "Stuben", type: "EUB 8er", openH: 8, openM: 45, closeH: 16, closeM: 0 },
+      { name: "Valfagehrbahn", sector: "Alpe Rauz", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
+
+      /* Lech / Oberlech / Zürs */
+      { name: "Rüfikopfbahn I & II", sector: "Lech", type: "Pendelbahn", openH: 8, openM: 30, closeH: 16, closeM: 20 },
+      { name: "Schlegelkopfbahn I & II", sector: "Lech", type: "Sesselbahn", openH: 8, openM: 45, closeH: 16, closeM: 15 },
+      { name: "Bergbahn Oberlech", sector: "Oberlech", type: "Pendelbahn", openH: 8, openM: 0, closeH: 18, closeM: 0 },
+      { name: "Petersbodenbahn", sector: "Oberlech", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
+      { name: "Weibermahd", sector: "Lech", type: "EUB 10er", openH: 8, openM: 30, closeH: 16, closeM: 15 },
+      { name: "Kriegerhornbahn", sector: "Lech", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
+      { name: "Auenfeldjet", sector: "Lech / Warth", type: "EUB 10er", openH: 8, openM: 30, closeH: 16, closeM: 0 },
+      { name: "Madlochbahn", sector: "Zürs", type: "Sesselbahn 4er", openH: 9, openM: 0, closeH: 16, closeM: 0 },
+      { name: "Trittalpbahn", sector: "Zürs", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
+      { name: "Seekopfbahn", sector: "Zürs", type: "Sesselbahn 4er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
+      { name: "Zürserseebahn", sector: "Zürs", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
+
+      /* Warth / Schröcken */
+      { name: "Steffisalp-Express", sector: "Warth", type: "EUB 6er", openH: 8, openM: 30, closeH: 16, closeM: 15 },
+      { name: "Saloberjet", sector: "Schröcken", type: "EUB 8er", openH: 8, openM: 30, closeH: 16, closeM: 15 },
+      { name: "Jägeralp-Express", sector: "Warth", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
+      { name: "Wannenkopfbahn", sector: "Schröcken", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
+      { name: "Dorfbahn Warth", sector: "Warth", type: "EUB 8er", openH: 8, openM: 0, closeH: 17, closeM: 0 }
     ];
 
-    let tableScrollInterval = null;
+    let animFrameId = null;
 
-    /* VÉRIFICATION DU STATUT : STATION FERMÉE PAR DÉFAUT */
+    /* VÉRIFICATION DU STATUT HORS SAISON */
     function checkLiftStatus(lift, now) {
       const month = now.getMonth();
       const isWinterSeason = (month >= 11 || month <= 3);
@@ -688,19 +907,19 @@
 
       fadeTranslate(fadeTargets, () => {
         if (lang === 'de') {
-          document.getElementById('board-title-text').textContent = "Bergbahnen Status – St. Anton / St. Christoph / Stuben";
+          document.getElementById('board-title-text').textContent = "Ski Arlberg – Alle Bergbahnen (St. Anton, Lech, Zürs, Warth, Stuben)";
           document.getElementById('th-sector').textContent = "Anlage / Sektor";
           document.getElementById('th-type').textContent = "Typ";
           document.getElementById('th-hours').textContent = "Betriebszeiten";
           document.getElementById('th-status').textContent = "Status";
         } else if (lang === 'fr') {
-          document.getElementById('board-title-text').textContent = "État des remontées – St. Anton / St. Christoph / Stuben";
+          document.getElementById('board-title-text').textContent = "Ski Arlberg – Toutes les remontées (St. Anton, Lech, Zürs, Warth, Stuben)";
           document.getElementById('th-sector').textContent = "Remontée / Secteur";
           document.getElementById('th-type').textContent = "Type";
           document.getElementById('th-hours').textContent = "Horaires";
           document.getElementById('th-status').textContent = "Statut";
         } else {
-          document.getElementById('board-title-text').textContent = "Lifts Status – St. Anton / St. Christoph / Stuben";
+          document.getElementById('board-title-text').textContent = "Ski Arlberg – All Lifts (St. Anton, Lech, Zürs, Warth, Stuben)";
           document.getElementById('th-sector').textContent = "Lift / Sector";
           document.getElementById('th-type').textContent = "Type";
           document.getElementById('th-hours').textContent = "Hours";
@@ -709,10 +928,11 @@
       });
     }
 
+    /* DÉFILEMENT FLUIDE DU TABLEAU */
     function startFullBoardScrollSequence(onComplete) {
       const container = document.getElementById('table-scroll-container');
       container.scrollTop = 0;
-      clearInterval(tableScrollInterval);
+      cancelAnimationFrame(animFrameId);
 
       let currentLangIndex = 0;
       const languages = ['de', 'fr', 'en'];
@@ -724,19 +944,30 @@
         renderLiftsBoard(languages[currentLangIndex]);
       }, 7000);
 
-      setTimeout(() => {
-        tableScrollInterval = setInterval(() => {
-          container.scrollTop += 1.2;
+      let lastTime = null;
+      function step(timestamp) {
+        if (!lastTime) lastTime = timestamp;
+        const elapsed = timestamp - lastTime;
+        
+        if (elapsed > 25) { 
+          container.scrollTop += 1;
+          lastTime = timestamp;
+        }
 
-          if (container.scrollTop + container.clientHeight >= container.scrollHeight - 2) {
-            clearInterval(tableScrollInterval);
-            clearInterval(langInterval);
-            setTimeout(() => {
-              container.scrollTop = 0;
-              onComplete();
-            }, 2500);
-          }
-        }, 35);
+        if (container.scrollTop + container.clientHeight >= container.scrollHeight - 2) {
+          cancelAnimationFrame(animFrameId);
+          clearInterval(langInterval);
+          setTimeout(() => {
+            container.scrollTop = 0;
+            onComplete();
+          }, 2500);
+          return;
+        }
+        animFrameId = requestAnimationFrame(step);
+      }
+
+      setTimeout(() => {
+        animFrameId = requestAnimationFrame(step);
       }, 1500);
     }
 
@@ -752,7 +983,6 @@
     let weatherData = null;
     let currentLang = 'de';
 
-    /* SÉLECTION DE L'IMAGE MÉTÉO IMMERSIVE EN ARRIÈRE-PLAN */
     function updateWeatherImageBackground(code) {
       document.querySelectorAll('.weather-img-bg').forEach(img => img.classList.remove('active'));
       
@@ -777,7 +1007,6 @@
       }
     }
 
-    /* MÉTÉO CARSPACH */
     async function fetchWeatherData() {
       try {
         const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=47.6254&longitude=7.2114&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Europe%2FParis');
@@ -945,7 +1174,7 @@
       restoreBarTemp();
       const video = document.getElementById('custom-mp4-video');
       if (video) video.pause();
-      transitionToNext(getNextStep(6));
+      transitionToNext(getNextStep(7));
     }
 
     function restoreBarTemp() {
@@ -961,21 +1190,24 @@
       return currentMinutes >= startMinutes && currentMinutes < endMinutes;
     }
 
+    /* ORDRE DES SLIDES MODIFIÉ SELON VOTRE DEMANDE */
     const slides = [ 
-      document.getElementById('slideWelcome'), 
-      document.getElementById('slide1'), 
-      document.getElementById('slide2'), 
-      document.getElementById('slide3'), 
-      document.getElementById('slide4'), 
-      document.getElementById('slide5'),
-      document.getElementById('slide6') 
+      document.getElementById('slideWelcome'),  /* 0. ACCUEIL */
+      document.getElementById('slideToday'),    /* 1. MÉTÉO ACTUELLE DU JOUR */
+      document.getElementById('slideForecast'), /* 2. PRÉVISIONS MÉTÉO 3 JOURS */
+      document.getElementById('slideWebcam'),   /* 3. WEBCAM LIVE */
+      document.getElementById('slideSnow'),     /* 4. TABLEAU DE NEIGE */
+      document.getElementById('slideLifts'),    /* 5. TABLEAU DES TÉLÉPHÉRIQUES */
+      document.getElementById('slideMap'),      /* 6. CARTE SKI ARLBERG */
+      document.getElementById('slideVideo')     /* 7. VIDÉOS */
     ];
     let step = 0;
 
     function getNextStep(fromStep) {
       let next = (fromStep + 1) % slides.length;
-      if (next === 5 && !isTimeBetween(6, 0, 20, 30)) {
-        return getNextStep(5);
+      /* Si la webcam (step 3) est appelée en dehors de 06h00 - 20h30, on saute vers la suivante */
+      if (next === 3 && !isTimeBetween(6, 0, 20, 30)) {
+        return getNextStep(3);
       }
       return next;
     }
@@ -1007,41 +1239,51 @@
         setTimeout(() => setWelcomeLanguage('en'), 10000);
         setTimeout(() => { transitionToNext(getNextStep(0)); }, 15000);
       } else if (step === 1) {
-        /* MÉTÉO DU JOUR */
+        /* 1. MÉTÉO DU JOUR (ACTUELLE) */
         setTodayLanguage('de');
         setTimeout(() => setTodayLanguage('fr'), 5000);
         setTimeout(() => setTodayLanguage('en'), 10000);
         setTimeout(() => { transitionToNext(getNextStep(1)); }, 15000);
       } else if (step === 2) {
-        /* PRÉVISIONS 3 JOURS */
+        /* 2. PRÉVISIONS 3 JOURS */
         setForecastLanguage('de');
         setTimeout(() => setForecastLanguage('fr'), 5000);
         setTimeout(() => setForecastLanguage('en'), 10000);
         setTimeout(() => { transitionToNext(getNextStep(2)); }, 15000);
       } else if (step === 3) {
-        /* CARTE ORIGINAL PROPRE */
-        document.getElementById('bar-info').innerHTML = `<i class="fas fa-map-marked-alt"></i> Panorama &nbsp;&bull;&nbsp; Ski Arlberg`;
-        setTimeout(() => { 
-          restoreBarTemp();
-          transitionToNext(getNextStep(3)); 
-        }, 15000);
-      } else if (step === 4) {
-        /* TABLEAU DÉFILANT COMPLET DES REMONTÉES */
-        document.getElementById('bar-info').innerHTML = `<i class="fas fa-list-alt"></i> Remontées Mécaniques &nbsp;&bull;&nbsp; Ski Arlberg`;
-        startFullBoardScrollSequence(() => {
-          restoreBarTemp();
-          transitionToNext(getNextStep(4));
-        });
-      } else if (step === 5) {
-        /* WEBCAM LIVE */
+        /* 3. WEBCAM LIVE */
         loadWebcamStream();
         setTimeout(() => { 
           document.getElementById('webcam-iframe').src = "about:blank";
           restoreBarTemp();
-          transitionToNext(getNextStep(5)); 
+          transitionToNext(getNextStep(3)); 
         }, 53000);
+      } else if (step === 4) {
+        /* 4. TABLEAU DE NEIGE (RAPPORT NEIGE) */
+        updateSnowUI('de');
+        setTimeout(() => updateSnowUI('fr'), 5000);
+        setTimeout(() => updateSnowUI('en'), 10000);
+        document.getElementById('bar-info').innerHTML = `<i class="fas fa-snowflake"></i> Schneebericht &nbsp;&bull;&nbsp; Ski Arlberg`;
+        setTimeout(() => {
+          restoreBarTemp();
+          transitionToNext(getNextStep(4));
+        }, 15000);
+      } else if (step === 5) {
+        /* 5. TABLEAU DES TÉLÉPHÉRIQUES */
+        document.getElementById('bar-info').innerHTML = `<i class="fas fa-list-alt"></i> Bergbahnen &nbsp;&bull;&nbsp; Ski Arlberg`;
+        startFullBoardScrollSequence(() => {
+          restoreBarTemp();
+          transitionToNext(getNextStep(5));
+        });
       } else if (step === 6) {
-        /* VIDÉO LIVE */
+        /* 6. CARTE SKI ARLBERG */
+        document.getElementById('bar-info').innerHTML = `<i class="fas fa-map-marked-alt"></i> Ski Arlberg &nbsp;&bull;&nbsp; St. Anton Panorama`;
+        setTimeout(() => { 
+          restoreBarTemp();
+          transitionToNext(getNextStep(6)); 
+        }, 15000);
+      } else if (step === 7) {
+        /* 7. VIDÉOS */
         loadVideoStream();
       }
     }
