@@ -8,6 +8,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
+    :root {
+      --tintin-red: #E2001A;
+      --tintin-red-glow: rgba(226, 0, 26, 0.4);
+      --green-open: #2ecc71;
+      --green-glow: rgba(46, 204, 113, 0.4);
+    }
+
     * { 
       box-sizing: border-box; 
       margin: 0; 
@@ -87,7 +94,7 @@
       z-index: 1;
     }
 
-    /* TRANSITIONS CONTINUES (GLISSEMENT) */
+    /* TRANSITIONS CONTINUES (GLISSEMENT VERS LA GAUCHE) */
     .slide {
       position: absolute;
       top: 0;
@@ -283,7 +290,6 @@
     .snow-card .alt { font-size: 1rem; color: rgba(255, 255, 255, 0.7); font-weight: 700; }
     .snow-card .depth { font-size: 3.5rem; font-weight: 900; color: #ffffff; text-shadow: 0 4px 15px rgba(56,189,248,0.5); }
     
-    /* BADGES CLIGNOTANTS COLORÉS POUR LA NEIGE */
     .snow-badge {
       display: inline-flex;
       align-items: center;
@@ -297,7 +303,6 @@
       letter-spacing: 0.5px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      animation: blink-badge 1.2s infinite ease-in-out;
     }
     .snow-badge.no-snow {
       background-color: rgba(239, 68, 68, 0.25);
@@ -318,138 +323,117 @@
       box-shadow: 0 0 20px rgba(74, 222, 128, 0.4);
     }
 
-    /* SLIDE 5 : TABLEAU DES REMONTÉES */
-    .lifts-board-container {
+    /* SLIDE 5 : NOUVEAU DESIGN LIGNES DE PROGRESSION ANIMÉES PAR SOUS-DOMAINE */
+    .lifts-container {
       width: calc(100vw - 30px);
       height: calc(100vh - 95px);
       margin: 15px auto;
-      padding: 30px;
+      padding: 35px 45px;
       display: flex;
       flex-direction: column;
-      background: rgba(10, 18, 32, 0.8);
+      background: rgba(10, 18, 32, 0.85);
       backdrop-filter: blur(25px);
       border-radius: 24px;
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
-    .board-header {
-      height: 50px;
-      font-size: 2.2rem;
+    .lifts-header {
+      font-size: 2.3rem;
       font-weight: 800;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
       gap: 15px;
-      flex-shrink: 0;
       color: #f8fafc;
-      text-shadow: 0 5px 15px rgba(0,0,0,0.5);
-      overflow: hidden;
-    }
-    #board-title-text {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    
-    .table-wrapper {
-      width: 100%;
-      flex-grow: 1;
-      overflow-y: auto; 
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 16px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
-      position: relative;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      will-change: scroll-position;
-    }
-    .table-wrapper::-webkit-scrollbar {
-      display: none;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 
-    .board-table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
-    
-    .board-table th:nth-child(1), .board-table td:nth-child(1) { width: 36%; }
-    .board-table th:nth-child(2), .board-table td:nth-child(2) { width: 18%; }
-    .board-table th:nth-child(3), .board-table td:nth-child(3) { width: 22%; }
-    .board-table th:nth-child(4), .board-table td:nth-child(4) { width: 24%; }
-
-    .board-table thead {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(8, 15, 28, 0.95);
-      backdrop-filter: blur(20px);
-    }
-    .board-table th {
-      padding: 14px 18px;
-      text-align: left;
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: rgba(255, 255, 255, 0.95);
-      letter-spacing: 1px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
-    .board-table td {
-      padding: 14px 18px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
-    .board-table tr:nth-child(even) {
-      background-color: rgba(255, 255, 255, 0.03);
-    }
-    
-    /* STATUTS CLIGNOTANTS DES REMONTÉES */
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
+    .subdomain-rows-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
       justify-content: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 30px;
-      font-size: 1rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      width: 170px;
-      text-align: center;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      animation: blink-badge 1.2s infinite ease-in-out;
-    }
-    .status-badge.open {
-      background-color: rgba(46, 204, 113, 0.25);
-      color: #4ade80;
-      border: 1px solid rgba(74, 222, 128, 0.6);
-      box-shadow: 0 0 20px rgba(74, 222, 128, 0.4);
-    }
-    .status-badge.closed {
-      background-color: rgba(239, 68, 68, 0.25);
-      color: #f87171;
-      border: 1px solid rgba(248, 113, 113, 0.6);
-      box-shadow: 0 0 20px rgba(248, 113, 113, 0.4);
+      flex-grow: 1;
     }
 
-    @keyframes blink-badge {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.35; transform: scale(0.97); }
+    .subdomain-row-item {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 25px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .row-info-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .subdomain-name {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    }
+
+    .percentage-text-box {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .percent-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .percent-label {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    /* BARRE DE PROGRESSION ANIMÉE DE 0 À X% */
+    .row-progress-bg {
+      width: 100%;
+      height: 22px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+    }
+
+    .row-progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 30px;
+      transition: width 1.8s cubic-bezier(0.1, 0.8, 0.3, 1);
+    }
+
+    /* COULEUR VERTE DÈS 1 TÉLÉPHÉRIQUE OUVERT */
+    .subdomain-row-item.has-open .percent-number {
+      color: #4ade80;
+      text-shadow: 0 0 15px var(--green-glow);
+    }
+    .subdomain-row-item.has-open .row-progress-fill {
+      background: linear-gradient(90deg, #27ae60, #4ade80);
+      box-shadow: 0 0 20px var(--green-glow);
+    }
+
+    /* COULEUR ROUGE QUAND 0 TÉLÉPHÉRIQUE OUVERT */
+    .subdomain-row-item.all-closed .percent-number {
+      color: #f87171;
+      text-shadow: 0 0 15px var(--tintin-red-glow);
+    }
+    .subdomain-row-item.all-closed .row-progress-fill {
+      background: linear-gradient(90deg, #c0392b, #f87171);
+      box-shadow: 0 0 20px var(--tintin-red-glow);
     }
 
     /* SLIDE 6 : CARTE SKI ARLBERG CENTRÉE VERS LE BAS SUR ST. ANTON */
@@ -473,22 +457,6 @@
     .webcam-container { width: 100%; height: 100vh; background: #000; position: relative; overflow: hidden; }
     .webcam-iframe { width: 100%; height: 100vh; border: none; position: absolute; top: 0; left: 0; }
     .custom-video { width: 100%; height: 100vh; object-fit: cover; border: none; position: absolute; top: 0; left: 0; }
-
-    @media (max-width: 1024px) {
-      .welcome-title { font-size: 3.5rem; }
-      .welcome-subtitle { font-size: 1.8rem; padding: 0 20px; }
-      .today-header { font-size: 3.2rem; }
-      .temp-display { font-size: 6rem; }
-      .today-left-box i { font-size: 4.5rem; }
-      .today-left-box p { font-size: 1.3rem; }
-      .forecast-col h3 { font-size: 2.2rem; }
-      .forecast-col-mid i { font-size: 3.8rem; }
-      .forecast-col-mid p { font-size: 1.1rem; }
-      .temp-row { font-size: 1.8rem; }
-      .board-header { font-size: 2rem; }
-      .board-table th, .board-table td { font-size: 1.1rem; padding: 12px 14px; }
-      .snow-grid { grid-template-columns: repeat(2, 1fr); }
-    }
   </style>
 </head>
 <body>
@@ -661,27 +629,15 @@
       </div>
     </div>
 
-    <!-- 5. TABLEAU DÉFILANT DES TÉLÉPHÉRIQUES -->
+    <!-- 5. TÉLÉPHÉRIQUES : LIGNES D'ANIMATION DE POURCENTAGE DE MISE EN SERVICE -->
     <div class="slide" id="slideLifts">
-      <div class="lifts-board-container">
-        <div class="board-header">
-          <i class="fas fa-list-alt" style="color:#38bdf8;"></i>
-          <span id="board-title-text" class="fade-text">Ski Arlberg – Alle Bergbahnen (St. Anton, Lech, Zürs, Warth, Stuben)</span>
+      <div class="lifts-container">
+        <div class="lifts-header">
+          <i class="fas fa-cable-car" style="color:#38bdf8;"></i>
+          <span id="board-title-text" class="fade-text">Ski Arlberg – Status der Bergbahnen</span>
         </div>
-        <div class="table-wrapper" id="table-scroll-container">
-          <table class="board-table">
-            <thead>
-              <tr>
-                <th id="th-sector" class="fade-text">Anlage / Sektor</th>
-                <th id="th-type" class="fade-text">Typ</th>
-                <th id="th-hours" class="fade-text">Betriebszeiten</th>
-                <th id="th-status" class="fade-text">Status</th>
-              </tr>
-            </thead>
-            <tbody id="lifts-table-body">
-              <!-- Rempli dynamiquement -->
-            </tbody>
-          </table>
+        <div class="subdomain-rows-wrapper" id="subdomain-rows-wrapper">
+          <!-- Rempli dynamiquement -->
         </div>
       </div>
     </div>
@@ -731,14 +687,7 @@
     let videoTimeout = null;
 
     /* HAUTEURS DE NEIGE PAR SECTEUR (CM) */
-    const snowData = {
-      valluga: 0,
-      galzig: 0,
-      gampen: 0,
-      rendl: 0,
-      kapall: 0,
-      tal: 0
-    };
+    const snowData = { valluga: 0, galzig: 0, gampen: 0, rendl: 0, kapall: 0, tal: 0 };
 
     /* MÉTÉO ST. ANTON EN DIRECT POUR DÉTECTER LA NEIGE EN COURS */
     let stAntonIsSnowing = false;
@@ -768,9 +717,8 @@
 
       const titleTarget = document.getElementById('snow-title-text');
       const badgeTargets = sectors.map(s => document.getElementById(`badge-${s.id}`));
-      const allFadeTargets = [titleTarget, ...badgeTargets];
 
-      fadeTranslate(allFadeTargets, () => {
+      fadeTranslate([titleTarget, ...badgeTargets], () => {
         if (lang === 'de') titleTarget.textContent = "Schneehöhen – St. Anton am Arlberg";
         else if (lang === 'fr') titleTarget.textContent = "Hauteurs de neige – St. Anton am Arlberg";
         else titleTarget.textContent = "Snow Depths – St. Anton am Arlberg";
@@ -778,18 +726,16 @@
         sectors.forEach(s => {
           const depthEl = document.getElementById(`depth-${s.id}`);
           const badgeEl = document.getElementById(`badge-${s.id}`);
-          
           depthEl.textContent = `${s.depth} cm`;
-
           badgeEl.className = 'snow-badge fade-text';
 
           if (stAntonIsSnowing) {
             badgeEl.classList.add('snowing');
-            let text = (lang === 'de' ? "Schneefall" : lang === 'fr' ? "Neige en cours" : "Snowing");
+            let text = (lang === 'de' ? "Schneefall" : lang === 'fr' ? "Neige" : "Snowing");
             badgeEl.innerHTML = `<i class="fas fa-snowflake"></i> ${text}`;
           } else if (s.depth > 0) {
             badgeEl.classList.add('good-snow');
-            let text = (lang === 'de' ? "Gut befahrbar" : lang === 'fr' ? "Enneigé" : "Good snow");
+            let text = (lang === 'de' ? "Befahrbar" : lang === 'fr' ? "Enneigé" : "Good snow");
             badgeEl.innerHTML = `<i class="fas fa-check-circle"></i> ${text}`;
           } else {
             badgeEl.classList.add('no-snow');
@@ -800,182 +746,130 @@
       });
     }
 
-    /* LISTE COMPLÈTE DES REMONTÉES DE TOUT LE DOMAINE SKI ARLBERG */
-    const liftsBoardData = [
-      /* St. Anton / St. Christoph / Stuben */
-      { name: "Galzigbahn", sector: "St. Anton", type: "Funitel", openH: 8, openM: 30, closeH: 16, closeM: 30 },
-      { name: "Valluga I", sector: "St. Anton", type: "Pendelbahn", openH: 8, openM: 40, closeH: 16, closeM: 0 },
-      { name: "Valluga II", sector: "St. Anton", type: "Pendelbahn", openH: 8, openM: 40, closeH: 16, closeM: 20 },
-      { name: "Schindlergratbahn", sector: "St. Anton", type: "EUB 10er", openH: 8, openM: 45, closeH: 16, closeM: 0 },
-      { name: "Osthangbahn", sector: "St. Anton", type: "Sesselbahn 8er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Tanzbödenbahn", sector: "St. Anton", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Zammermoosbahn", sector: "St. Anton", type: "Sesselbahn 4er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Gampenbahn", sector: "St. Anton", type: "Sesselbahn 6er", openH: 8, openM: 15, closeH: 16, closeM: 15 },
-      { name: "Kapallbahn", sector: "St. Anton", type: "Sesselbahn 6er", openH: 8, openM: 30, closeH: 16, closeM: 0 },
-      { name: "Nassereinbahn", sector: "St. Anton", type: "Gondelbahn", openH: 8, openM: 30, closeH: 16, closeM: 30 },
-      { name: "Fangbahn", sector: "St. Anton", type: "Sesselbahn 4er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Mattunbahn", sector: "St. Anton", type: "Sesselbahn 4er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Rendlbahn", sector: "St. Anton Rendl", type: "Gondelbahn 8er", openH: 8, openM: 30, closeH: 16, closeM: 30 },
-      { name: "Gampbergbahn", sector: "St. Anton Rendl", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Riffelbahn I & II", sector: "St. Anton Rendl", type: "Sesselbahn", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "St. Christophbahn", sector: "St. Christoph", type: "Sesselbahn 4er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Flexenbahn", sector: "Alpe Rauz", type: "EUB 10er", openH: 8, openM: 30, closeH: 16, closeM: 0 },
-      { name: "Albonabahn I & II", sector: "Stuben", type: "EUB 8er", openH: 8, openM: 45, closeH: 16, closeM: 0 },
-      { name: "Valfagehrbahn", sector: "Alpe Rauz", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-
-      /* Lech / Oberlech / Zürs */
-      { name: "Rüfikopfbahn I & II", sector: "Lech", type: "Pendelbahn", openH: 8, openM: 30, closeH: 16, closeM: 20 },
-      { name: "Schlegelkopfbahn I & II", sector: "Lech", type: "Sesselbahn", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Bergbahn Oberlech", sector: "Oberlech", type: "Pendelbahn", openH: 8, openM: 0, closeH: 18, closeM: 0 },
-      { name: "Petersbodenbahn", sector: "Oberlech", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Weibermahd", sector: "Lech", type: "EUB 10er", openH: 8, openM: 30, closeH: 16, closeM: 15 },
-      { name: "Kriegerhornbahn", sector: "Lech", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Auenfeldjet", sector: "Lech / Warth", type: "EUB 10er", openH: 8, openM: 30, closeH: 16, closeM: 0 },
-      { name: "Madlochbahn", sector: "Zürs", type: "Sesselbahn 4er", openH: 9, openM: 0, closeH: 16, closeM: 0 },
-      { name: "Trittalpbahn", sector: "Zürs", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Seekopfbahn", sector: "Zürs", type: "Sesselbahn 4er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Zürserseebahn", sector: "Zürs", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-
-      /* Warth / Schröcken */
-      { name: "Steffisalp-Express", sector: "Warth", type: "EUB 6er", openH: 8, openM: 30, closeH: 16, closeM: 15 },
-      { name: "Saloberjet", sector: "Schröcken", type: "EUB 8er", openH: 8, openM: 30, closeH: 16, closeM: 15 },
-      { name: "Jägeralp-Express", sector: "Warth", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Wannenkopfbahn", sector: "Schröcken", type: "Sesselbahn 6er", openH: 8, openM: 45, closeH: 16, closeM: 15 },
-      { name: "Dorfbahn Warth", sector: "Warth", type: "EUB 8er", openH: 8, openM: 0, closeH: 17, closeM: 0 }
+    /* DONNÉES DE REMONTÉES PAR SOUS-DOMAINE */
+    const subdomainsData = [
+      { id: 'st-anton', name: "St. Anton – St. Christoph – Stuben", totalLifts: 37, openH: 8, openM: 30, closeH: 16, closeM: 30 },
+      { id: 'lech', name: "Lech – Oberlech – Zürs", totalLifts: 31, openH: 8, openM: 30, closeH: 16, closeM: 30 },
+      { id: 'warth', name: "Warth – Schröcken", totalLifts: 15, openH: 8, openM: 30, closeH: 16, closeM: 30 }
     ];
 
-    let animFrameId = null;
-
-    /* VÉRIFICATION DU STATUT HORS SAISON */
-    function checkLiftStatus(lift, now) {
+    function isSeasonOpen(now) {
       const month = now.getMonth();
-      const isWinterSeason = (month >= 11 || month <= 3);
+      return (month >= 11 || month <= 3); // Décembre à Avril
+    }
 
-      if (!isWinterSeason) {
-        return 'closed';
-      }
-
-      const openM = lift.openH * 60 + lift.openM;
-      const closeM = lift.closeH * 60 + lift.closeM;
+    function calculateSubdomainOpenLifts(subdomain, now) {
+      if (!isSeasonOpen(now)) return 0;
+      const openMinutes = subdomain.openH * 60 + subdomain.openM;
+      const closeMinutes = subdomain.closeH * 60 + subdomain.closeM;
       const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-      if (currentMinutes >= openM && currentMinutes < closeM) {
-        return 'open';
-      } else {
-        return 'closed';
+      if (currentMinutes >= openMinutes && currentMinutes < closeMinutes) {
+        return Math.round(subdomain.totalLifts * 0.92);
       }
+      return 0;
     }
 
-    function renderLiftsBoard(lang = 'de') {
-      const tbody = document.getElementById('lifts-table-body');
-      tbody.innerHTML = '';
-
+    /* INITIALISATION DES LIGNES PAR SOUS-DOMAINE ET ANIMATION DE PROGRESSION DÈS $0\%$ */
+    function initSubdomainRows() {
+      const wrapper = document.getElementById('subdomain-rows-wrapper');
+      wrapper.innerHTML = '';
       const now = new Date();
 
-      liftsBoardData.forEach(lift => {
-        const statusCode = checkLiftStatus(lift, now);
+      subdomainsData.forEach(sub => {
+        const openCount = calculateSubdomainOpenLifts(sub, now);
+        const targetPercent = Math.round((openCount / sub.totalLifts) * 100);
+        const isOpen = openCount >= 1; // Vert dès 1 téléphérique ouvert, sinon rouge
 
-        let statusText = '';
-        let statusClass = statusCode;
-        let iconHtml = '';
+        const item = document.createElement('div');
+        item.className = `subdomain-row-item ${isOpen ? 'has-open' : 'all-closed'}`;
+        item.id = `row-${sub.id}`;
 
-        if (statusCode === 'open') {
-          statusText = (lang === 'de' ? 'Geöffnet' : lang === 'fr' ? 'Ouvert' : 'Open');
-          iconHtml = '<i class="fas fa-check-circle"></i>';
-        } else {
-          statusText = (lang === 'de' ? 'Geschlossen' : lang === 'fr' ? 'Fermé' : 'Closed');
-          iconHtml = '<i class="fas fa-times-circle"></i>';
-        }
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td><strong>${lift.name}</strong> <small style="opacity:0.75; margin-left:6px;">(${lift.sector})</small></td>
-          <td>${lift.type}</td>
-          <td>${String(lift.openH).padStart(2,'0')}:${String(lift.openM).padStart(2,'0')} - ${String(lift.closeH).padStart(2,'0')}:${String(lift.closeM).padStart(2,'0')}</td>
-          <td><span class="status-badge ${statusClass}">${iconHtml} ${statusText}</span></td>
+        item.innerHTML = `
+          <div class="row-info-top">
+            <div class="subdomain-name">${sub.name}</div>
+            <div class="percentage-text-box">
+              <span class="percent-number" id="num-${sub.id}">0%</span>
+              <span class="percent-label" id="lbl-${sub.id}">Betriebsquote</span>
+            </div>
+          </div>
+          <div class="row-progress-bg">
+            <div class="row-progress-fill" id="fill-${sub.id}" style="width: 0%;"></div>
+          </div>
         `;
-        tbody.appendChild(row);
+        wrapper.appendChild(item);
       });
+    }
 
-      const fadeTargets = [
-        document.getElementById('board-title-text'),
-        document.getElementById('th-sector'),
-        document.getElementById('th-type'),
-        document.getElementById('th-hours'),
-        document.getElementById('th-status')
-      ];
+    /* ANIMATION DU POURCENTAGE ET DE LA BARRE DU $0\%$ JUSQU'À LA VALEUR CIBLE */
+    function animateSubdomainRows() {
+      const now = new Date();
+      subdomainsData.forEach(sub => {
+        const openCount = calculateSubdomainOpenLifts(sub, now);
+        const targetPercent = Math.round((openCount / sub.totalLifts) * 100);
+        
+        const fillEl = document.getElementById(`fill-${sub.id}`);
+        const numEl = document.getElementById(`num-${sub.id}`);
 
-      fadeTranslate(fadeTargets, () => {
-        if (lang === 'de') {
-          document.getElementById('board-title-text').textContent = "Ski Arlberg – Alle Bergbahnen (St. Anton, Lech, Zürs, Warth, Stuben)";
-          document.getElementById('th-sector').textContent = "Anlage / Sektor";
-          document.getElementById('th-type').textContent = "Typ";
-          document.getElementById('th-hours').textContent = "Betriebszeiten";
-          document.getElementById('th-status').textContent = "Status";
-        } else if (lang === 'fr') {
-          document.getElementById('board-title-text').textContent = "Ski Arlberg – Toutes les remontées (St. Anton, Lech, Zürs, Warth, Stuben)";
-          document.getElementById('th-sector').textContent = "Remontée / Secteur";
-          document.getElementById('th-type').textContent = "Type";
-          document.getElementById('th-hours').textContent = "Horaires";
-          document.getElementById('th-status').textContent = "Statut";
-        } else {
-          document.getElementById('board-title-text').textContent = "Ski Arlberg – All Lifts (St. Anton, Lech, Zürs, Warth, Stuben)";
-          document.getElementById('th-sector').textContent = "Lift / Sector";
-          document.getElementById('th-type').textContent = "Type";
-          document.getElementById('th-hours').textContent = "Hours";
-          document.getElementById('th-status').textContent = "Status";
+        if (fillEl && numEl) {
+          // Animation de la barre de progression
+          setTimeout(() => {
+            fillEl.style.width = `${targetPercent}%`;
+          }, 100);
+
+          // Animation de l'incrémentation du nombre
+          let currentVal = 0;
+          const duration = 1800;
+          const stepTime = Math.max(15, Math.floor(duration / (targetPercent || 1)));
+          
+          if (targetPercent === 0) {
+            numEl.textContent = '0%';
+            return;
+          }
+
+          const counterInterval = setInterval(() => {
+            currentVal++;
+            numEl.textContent = `${currentVal}%`;
+            if (currentVal >= targetPercent) {
+              numEl.textContent = `${targetPercent}%`;
+              clearInterval(counterInterval);
+            }
+          }, stepTime);
         }
       });
     }
 
-    /* DÉFILEMENT FLUIDE DU TABLEAU */
-    function startFullBoardScrollSequence(onComplete) {
-      const container = document.getElementById('table-scroll-container');
-      container.scrollTop = 0;
-      cancelAnimationFrame(animFrameId);
+    /* TRADUCTION DU LIBELLÉ "POURCENTAGE DE MISE EN SERVICE" SANS TOUCHER À L'ANIMATION */
+    function translateSubdomainLabels(lang = 'de') {
+      const titleEl = document.getElementById('board-title-text');
+      const labelTargets = subdomainsData.map(s => document.getElementById(`lbl-${s.id}`));
 
-      let currentLangIndex = 0;
-      const languages = ['de', 'fr', 'en'];
-
-      renderLiftsBoard(languages[0]);
-
-      const langInterval = setInterval(() => {
-        currentLangIndex = (currentLangIndex + 1) % languages.length;
-        renderLiftsBoard(languages[currentLangIndex]);
-      }, 7000);
-
-      let lastTime = null;
-      function step(timestamp) {
-        if (!lastTime) lastTime = timestamp;
-        const elapsed = timestamp - lastTime;
-        
-        if (elapsed > 25) { 
-          container.scrollTop += 1;
-          lastTime = timestamp;
+      fadeTranslate([titleEl, ...labelTargets], () => {
+        if (lang === 'de') {
+          titleEl.textContent = "Ski Arlberg – Status der Bergbahnen";
+          subdomainsData.forEach(s => {
+            const el = document.getElementById(`lbl-${s.id}`);
+            if (el) el.textContent = "In Betrieb";
+          });
+        } else if (lang === 'fr') {
+          titleEl.textContent = "Ski Arlberg – Statut des Téléphériques";
+          subdomainsData.forEach(s => {
+            const el = document.getElementById(`lbl-${s.id}`);
+            if (el) el.textContent = "de mise en service";
+          });
+        } else {
+          titleEl.textContent = "Ski Arlberg – Cable Cars Status";
+          subdomainsData.forEach(s => {
+            const el = document.getElementById(`lbl-${s.id}`);
+            if (el) el.textContent = "in operation";
+          });
         }
-
-        if (container.scrollTop + container.clientHeight >= container.scrollHeight - 2) {
-          cancelAnimationFrame(animFrameId);
-          clearInterval(langInterval);
-          setTimeout(() => {
-            container.scrollTop = 0;
-            onComplete();
-          }, 2500);
-          return;
-        }
-        animFrameId = requestAnimationFrame(step);
-      }
-
-      setTimeout(() => {
-        animFrameId = requestAnimationFrame(step);
-      }, 1500);
+      });
     }
 
     function updateClock() {
       const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      document.getElementById('current-time').textContent = `${hours}:${minutes}`;
+      document.getElementById('current-time').textContent = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     }
     setInterval(updateClock, 1000);
     updateClock();
@@ -985,26 +879,14 @@
 
     function updateWeatherImageBackground(code) {
       document.querySelectorAll('.weather-img-bg').forEach(img => img.classList.remove('active'));
-      
       let activeImgId = 'img-sunny';
-      if (code === 0) {
-        activeImgId = 'img-sunny';
-      } else if (code >= 1 && code <= 3) {
-        activeImgId = 'img-partly';
-      } else if (code >= 45 && code <= 48) {
-        activeImgId = 'img-cloudy';
-      } else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) {
-        activeImgId = 'img-rainy';
-      } else if (code >= 71 && code <= 77) {
-        activeImgId = 'img-snowy';
-      } else {
-        activeImgId = 'img-cloudy';
-      }
-
+      if (code === 0) activeImgId = 'img-sunny';
+      else if (code >= 1 && code <= 3) activeImgId = 'img-partly';
+      else if (code >= 45 && code <= 48) activeImgId = 'img-cloudy';
+      else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) activeImgId = 'img-rainy';
+      else if (code >= 71 && code <= 77) activeImgId = 'img-snowy';
       const activeImg = document.getElementById(activeImgId);
-      if (activeImg) {
-        activeImg.classList.add('active');
-      }
+      if (activeImg) activeImg.classList.add('active');
     }
 
     async function fetchWeatherData() {
@@ -1013,38 +895,23 @@
         weatherData = await response.json();
         updateWeatherImageBackground(weatherData.current.weather_code);
         updateWeatherUI(currentLang);
-      } catch (error) {
-        console.error("Erreur météo:", error);
-      }
+      } catch (error) { console.error("Erreur météo:", error); }
     }
 
     function getWeatherIcon(code) {
       if (code === 0) return 'fa-sun';
       if (code >= 1 && code <= 3) return 'fa-cloud-sun';
-      if (code >= 45 && code <= 48) return 'fa-smog';
       if (code >= 51 && code <= 67) return 'fa-cloud-rain';
       if (code >= 71 && code <= 77) return 'fa-snowflake';
-      if (code >= 80 && code <= 82) return 'fa-cloud-showers-heavy';
-      if (code >= 95) return 'fa-bolt';
       return 'fa-cloud';
     }
 
     function getRichWeatherDesc(code, tempMax, lang, index = 0) {
-      if (code === 0) {
-        if (index === 1) return (lang === 'de') ? "Strahlender Sonnenschein den ganzen Tag" : (lang === 'fr' ? "Grand soleil toute la journée" : "Bright sunshine all day");
-        if (index === 2) return (lang === 'de') ? "Klarer Himmel und exzellente Fernsicht" : (lang === 'fr' ? "Ciel dégagé et excellente visibilité" : "Clear skies and excellent visibility");
-        return (lang === 'de') ? "Viel Sonnenschein und wolkenlos" : (lang === 'fr' ? "Ensoleillé et ciel dégagé" : "Mostly sunny and clear");
-      }
-      if (code >= 1 && code <= 3) {
-        if (index === 1) return (lang === 'de') ? "Sonne-Wolken-Mix mit stabilen Verhältnissen" : (lang === 'fr' ? "Alternance de soleil et nuages" : "Mix of sun and clouds");
-        if (index === 2) return (lang === 'de') ? "Vorübergehende Wolkenfelder, meist freundlich" : (lang === 'fr' ? "Passages nuageux, globalement lumineux" : "Passing clouds, mostly pleasant");
-        return (lang === 'de') ? "Überwiegend sonnig mit leichten Schleierwolken" : (lang === 'fr' ? "Très ensoleillé avec légers voiles nuageux" : "Mostly sunny with light clouds");
-      }
+      if (code === 0) return (lang === 'de') ? "Viel Sonnenschein und wolkenlos" : (lang === 'fr' ? "Ensoleillé et ciel dégagé" : "Mostly sunny and clear");
+      if (code >= 1 && code <= 3) return (lang === 'de') ? "Sonne-Wolken-Mix" : (lang === 'fr' ? "Alternance soleil/nuages" : "Mix of sun and clouds");
       if (code >= 51 && code <= 67) return (lang === 'de') ? "Anhaltender Niederschlag" : (lang === 'fr' ? "Pluie continue" : "Continuous rainfall");
       if (code >= 71 && code <= 77) return (lang === 'de') ? "Schneefall" : (lang === 'fr' ? "Chutes de neige" : "Snowfall");
-      if (code >= 80 && code <= 82) return (lang === 'de') ? "Lokale Schauer" : (lang === 'fr' ? "Averses locales" : "Local showers");
-      if (code >= 95) return (lang === 'de') ? "Gewittergefahr" : (lang === 'fr' ? "Risque d'orages" : "Thunderstorm risk");
-      return (lang === 'de') ? "Wechselhafte Wetterlage" : (lang === 'fr' ? "Météo variable" : "Variable weather conditions");
+      return (lang === 'de') ? "Wechselhafte Wetterlage" : (lang === 'fr' ? "Météo variable" : "Variable weather");
     }
 
     function getDayNameOffset(offset, lang) {
@@ -1103,10 +970,10 @@
     }
 
     function fadeTranslate(elementsToFade, updateContentCallback) {
-      elementsToFade.forEach(el => el.classList.add('fade-out'));
+      elementsToFade.forEach(el => { if (el) el.classList.add('fade-out'); });
       setTimeout(() => {
         updateContentCallback();
-        elementsToFade.forEach(el => el.classList.remove('fade-out'));
+        elementsToFade.forEach(el => { if (el) el.classList.remove('fade-out'); });
       }, 500);
     }
 
@@ -1128,12 +995,12 @@
     }
 
     function setTodayLanguage(lang) {
-      const targets = [ document.getElementById('lbl-wind'), document.getElementById('lbl-humidity'), document.getElementById('lbl-rain'), document.getElementById('title-today'), document.getElementById('desc-today'), document.getElementById('val-temp'), document.getElementById('val-wind'), document.getElementById('val-humidity'), document.getElementById('val-rain') ];
+      const targets = [ document.getElementById('lbl-wind'), document.getElementById('lbl-humidity'), document.getElementById('lbl-rain'), document.getElementById('title-today'), document.getElementById('desc-today'), document.getElementById('val-temp') ];
       fadeTranslate(targets, () => updateWeatherUI(lang));
     }
 
     function setForecastLanguage(lang) {
-      const targets = [ document.getElementById('day1-name'), document.getElementById('day1-desc'), document.getElementById('day1-max'), document.getElementById('day1-min'), document.getElementById('lbl-day1-max'), document.getElementById('lbl-day1-min'), document.getElementById('day2-name'), document.getElementById('day2-desc'), document.getElementById('day2-max'), document.getElementById('day2-min'), document.getElementById('lbl-day2-max'), document.getElementById('lbl-day2-min'), document.getElementById('day3-name'), document.getElementById('day3-desc'), document.getElementById('day3-max'), document.getElementById('day3-min'), document.getElementById('lbl-day3-min') ];
+      const targets = [ document.getElementById('day1-name'), document.getElementById('day1-desc'), document.getElementById('day2-name'), document.getElementById('day2-desc'), document.getElementById('day3-name'), document.getElementById('day3-desc') ];
       fadeTranslate(targets, () => updateWeatherUI(lang));
     }
 
@@ -1185,19 +1052,17 @@
     function isTimeBetween(startH, startM, endH, endM) {
       const now = new Date();
       const currentMinutes = now.getHours() * 60 + now.getMinutes();
-      const startMinutes = startH * 60 + startM;
-      const endMinutes = endH * 60 + endM;
-      return currentMinutes >= startMinutes && currentMinutes < endMinutes;
+      return currentMinutes >= (startH * 60 + startM) && currentMinutes < (endH * 60 + endM);
     }
 
-    /* ORDRE DES SLIDES MODIFIÉ SELON VOTRE DEMANDE */
+    /* ORDRE DES SLIDES */
     const slides = [ 
       document.getElementById('slideWelcome'),  /* 0. ACCUEIL */
       document.getElementById('slideToday'),    /* 1. MÉTÉO ACTUELLE DU JOUR */
       document.getElementById('slideForecast'), /* 2. PRÉVISIONS MÉTÉO 3 JOURS */
       document.getElementById('slideWebcam'),   /* 3. WEBCAM LIVE */
       document.getElementById('slideSnow'),     /* 4. TABLEAU DE NEIGE */
-      document.getElementById('slideLifts'),    /* 5. TABLEAU DES TÉLÉPHÉRIQUES */
+      document.getElementById('slideLifts'),    /* 5. LIGNES D'ANIMATION TÉLÉPHÉRIQUES */
       document.getElementById('slideMap'),      /* 6. CARTE SKI ARLBERG */
       document.getElementById('slideVideo')     /* 7. VIDÉOS */
     ];
@@ -1205,7 +1070,6 @@
 
     function getNextStep(fromStep) {
       let next = (fromStep + 1) % slides.length;
-      /* Si la webcam (step 3) est appelée en dehors de 06h00 - 20h30, on saute vers la suivante */
       if (next === 3 && !isTimeBetween(6, 0, 20, 30)) {
         return getNextStep(3);
       }
@@ -1214,7 +1078,6 @@
 
     function transitionToNext(nextStep) {
       const current = slides[step];
-      
       current.classList.remove('active');
       current.classList.add('exit-left');
 
@@ -1239,7 +1102,7 @@
         setTimeout(() => setWelcomeLanguage('en'), 10000);
         setTimeout(() => { transitionToNext(getNextStep(0)); }, 15000);
       } else if (step === 1) {
-        /* 1. MÉTÉO DU JOUR (ACTUELLE) */
+        /* 1. MÉTÉO DU JOUR */
         setTodayLanguage('de');
         setTimeout(() => setTodayLanguage('fr'), 5000);
         setTimeout(() => setTodayLanguage('en'), 10000);
@@ -1259,7 +1122,7 @@
           transitionToNext(getNextStep(3)); 
         }, 53000);
       } else if (step === 4) {
-        /* 4. TABLEAU DE NEIGE (RAPPORT NEIGE) */
+        /* 4. TABLEAU DE NEIGE */
         updateSnowUI('de');
         setTimeout(() => updateSnowUI('fr'), 5000);
         setTimeout(() => updateSnowUI('en'), 10000);
@@ -1269,12 +1132,19 @@
           transitionToNext(getNextStep(4));
         }, 15000);
       } else if (step === 5) {
-        /* 5. TABLEAU DES TÉLÉPHÉRIQUES */
-        document.getElementById('bar-info').innerHTML = `<i class="fas fa-list-alt"></i> Bergbahnen &nbsp;&bull;&nbsp; Ski Arlberg`;
-        startFullBoardScrollSequence(() => {
+        /* 5. TÉLÉPHÉRIQUES (LIGNES ANIMÉES DE 0 À POURCENTAGE) */
+        document.getElementById('bar-info').innerHTML = `<i class="fas fa-cable-car"></i> Bergbahnen Status &nbsp;&bull;&nbsp; Ski Arlberg`;
+        initSubdomainRows();
+        setTimeout(() => animateSubdomainRows(), 300);
+
+        translateSubdomainLabels('de');
+        setTimeout(() => translateSubdomainLabels('fr'), 5000);
+        setTimeout(() => translateSubdomainLabels('en'), 10000);
+
+        setTimeout(() => {
           restoreBarTemp();
           transitionToNext(getNextStep(5));
-        });
+        }, 15000);
       } else if (step === 6) {
         /* 6. CARTE SKI ARLBERG */
         document.getElementById('bar-info').innerHTML = `<i class="fas fa-map-marked-alt"></i> Ski Arlberg &nbsp;&bull;&nbsp; St. Anton Panorama`;
