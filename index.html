@@ -56,40 +56,27 @@
       position: relative; 
     }
 
-    /* VIDÉO D'ARRIÈRE-PLAN EN BOUCLE */
+    /* VIDÉO D'ARRIÈRE-PLAN EN BOUCLE FLOUTÉE */
     .video-bg {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      z-index: -2;
-      transform: scale(1.12);
+      z-index: -1;
+      filter: blur(18px) brightness(0.8) contrast(1.1);
+      transform: scale(1.1);
       pointer-events: none;
       opacity: 0.9;
-    }
-
-    /* CALQUE DE FLOU COMPATIBLE TV SAMSUNG */
-    .video-blur-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      backdrop-filter: blur(22px) brightness(0.8) contrast(1.1);
-      -webkit-backdrop-filter: blur(22px) brightness(0.8) contrast(1.1);
-      background: rgba(5, 11, 20, 0.25);
-      pointer-events: none;
     }
 
     /* BANDEAU DU BAS FIXE - LIQUID GLASS ARRONDI */
     .bottom-bar {
       height: 60px; 
-      background: rgba(10, 15, 30, 0.52); 
-      backdrop-filter: blur(45px) saturate(150%);
-      -webkit-backdrop-filter: blur(45px) saturate(150%);
+      background: rgba(10, 15, 30, 0.75); 
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       color: #ffffff;
       display: flex; 
       align-items: center;
@@ -490,14 +477,13 @@
     /* WEBCAM ET VIDÉO */
     .webcam-container { width: 100%; height: 100vh; background: #000; position: relative; overflow: hidden; }
     .webcam-iframe { width: 100%; height: 100vh; border: none; position: absolute; top: 0; left: 0; }
-    .custom-video { width: 100%; height: 100vh; object-fit: cover; border: none; position: absolute; top: 0; left: 0; transform: scale(1.06); }
+    .custom-video { width: 100%; height: 100vh; object-fit: cover; border: none; position: absolute; top: 0; left: 0; }
   </style>
 </head>
 <body>
 
-  <!-- VIDÉO DE FOND EN BOUCLE SUR TOUTES LES SLIDES + CALQUE DE FLOU -->
+  <!-- VIDÉO DE FOND EN BOUCLE -->
   <video class="video-bg" id="video-bg" src="https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/297042177.webm" autoplay loop muted playsinline></video>
-  <div class="video-blur-overlay"></div>
 
   <div class="viewport">
 
