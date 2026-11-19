@@ -15,6 +15,31 @@
       --green-glow: rgba(46, 204, 113, 0.4);
     }
 
+    /* ADAPTATION GRANDE TV (SANS TOUCHER AUX TABLETTES) */
+    @media (min-width: 1400px) {
+      html {
+        font-size: 22px;
+      }
+      .bottom-bar {
+        height: 80px !important;
+      }
+      .weather-flex-wrapper, .forecast-full, .snow-container, .lifts-container {
+        height: calc(100vh - 115px) !important;
+      }
+    }
+
+    @media (min-width: 2200px) {
+      html {
+        font-size: 32px;
+      }
+      .bottom-bar {
+        height: 110px !important;
+      }
+      .weather-flex-wrapper, .forecast-full, .snow-container, .lifts-container {
+        height: calc(100vh - 150px) !important;
+      }
+    }
+
     * { 
       box-sizing: border-box; 
       margin: 0; 
@@ -245,7 +270,7 @@
     .temp-row { display: flex; justify-content: space-around; font-size: 2rem; font-weight: 800; text-shadow: 0 2px 6px rgba(0,0,0,0.6); }
     .label-row { display: flex; justify-content: space-around; font-size: 1rem; font-weight: 700; color: rgba(255, 255, 255, 0.75); margin-top: 4px; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
 
-    /* SLIDE 4 : HAUTEUR DE NEIGE PAR SECTEUR */
+    /* SLIDE HAUTEUR DE NEIGE PAR SECTEUR */
     .snow-container {
       width: calc(100vw - 30px);
       height: calc(100vh - 95px);
@@ -323,7 +348,7 @@
       box-shadow: 0 0 20px rgba(74, 222, 128, 0.4);
     }
 
-    /* SLIDE 5 : NOUVEAU DESIGN LIGNES DE PROGRESSION ANIMÉES PAR SOUS-DOMAINE */
+    /* SLIDE LIGNES DE PROGRESSION ANIMÉES PAR SOUS-DOMAINE */
     .lifts-container {
       width: calc(100vw - 30px);
       height: calc(100vh - 95px);
@@ -436,7 +461,7 @@
       box-shadow: 0 0 20px var(--tintin-red-glow);
     }
 
-    /* SLIDE 6 : CARTE SKI ARLBERG CENTRÉE VERS LE BAS SUR ST. ANTON */
+    /* CARTE SKI ARLBERG CENTRÉE VERS LE BAS SUR ST. ANTON */
     .clean-map-container {
       width: 100%;
       height: 100vh;
@@ -574,14 +599,21 @@
       </div>
     </div>
 
-    <!-- 3. WEBCAM LIVE -->
+    <!-- 3. NOUVELLES VIDÉOS LIVE -->
+    <div class="slide" id="slideNewVideo">
+      <div class="webcam-container">
+        <video id="custom-new-mp4-video" class="custom-video" autoplay muted playsinline src=""></video>
+      </div>
+    </div>
+
+    <!-- 4. WEBCAM LIVE -->
     <div class="slide" id="slideWebcam">
       <div class="webcam-container">
         <iframe id="webcam-iframe" class="webcam-iframe" referrerpolicy="no-referrer" src="about:blank"></iframe>
       </div>
     </div>
 
-    <!-- 4. TABLEAU DE NEIGE (RAPPORT NEIGE) -->
+    <!-- 5. TABLEAU DE NEIGE (RAPPORT NEIGE) -->
     <div class="slide" id="slideSnow">
       <div class="snow-container">
         <div class="snow-header">
@@ -629,7 +661,7 @@
       </div>
     </div>
 
-    <!-- 5. TÉLÉPHÉRIQUES : LIGNES D'ANIMATION DE POURCENTAGE DE MISE EN SERVICE -->
+    <!-- 6. TÉLÉPHÉRIQUES : LIGNES D'ANIMATION DE POURCENTAGE DE MISE EN SERVICE -->
     <div class="slide" id="slideLifts">
       <div class="lifts-container">
         <div class="lifts-header">
@@ -642,14 +674,14 @@
       </div>
     </div>
 
-    <!-- 6. CARTE SKI ARLBERG -->
+    <!-- 7. CARTE SKI ARLBERG -->
     <div class="slide" id="slideMap">
       <div class="clean-map-container">
         <img src="https://cdn.indebergen.nl/media/gx4b5o5d/ski-arlberg-pistenplan.jpg" alt="Ski Arlberg Pistenplan" class="clean-map-image">
       </div>
     </div>
 
-    <!-- 7. VIDÉOS LIVE -->
+    <!-- 8. VIDÉOS LIVE -->
     <div class="slide" id="slideVideo">
       <div class="webcam-container">
         <video id="custom-mp4-video" class="custom-video" autoplay muted playsinline src=""></video>
@@ -674,6 +706,16 @@
       { name: "Rendl", altitude: "2 030 m", url: "https://webtv.feratel.com/webtv/?design=v3&cam=5694&lg=de" }
     ];
     let currentWebcamIndex = 0;
+
+    /* NOUVELLES VIDÉOS GITHUB */
+    const newVideoList = [
+      "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/Neuschnee%20in%20St.%20Anton%20am%20Arlberg%20%E2%9D%84.mp4",
+      "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/Santa's%20sleigh_%20Not%20in%20St.%20Anton%20am%20Arlberg!%20(1).mp4",
+      "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/The%20Spirit%20of%20Winter%20%20%20St.%20Anton%20am%20Arlberg.mp4",
+      "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/Winterwonderland%20Verwall%20in%20St.%20Anton%20am%20Arlberg%20%E2%9D%84%EF%B8%8F%20(1).mp4"
+    ];
+    let currentNewVideoIndex = 0;
+    let newVideoTimeout = null;
 
     /* VIDÉOS GITHUB */
     const videoList = [
@@ -770,7 +812,7 @@
       return 0;
     }
 
-    /* INITIALISATION DES LIGNES PAR SOUS-DOMAINE ET ANIMATION DE PROGRESSION DÈS $0\%$ */
+    /* INITIALISATION DES LIGNES PAR SOUS-DOMAINE ET ANIMATION DE PROGRESSION DÈS 0% */
     function initSubdomainRows() {
       const wrapper = document.getElementById('subdomain-rows-wrapper');
       wrapper.innerHTML = '';
@@ -801,7 +843,7 @@
       });
     }
 
-    /* ANIMATION DU POURCENTAGE ET DE LA BARRE DU $0\%$ JUSQU'À LA VALEUR CIBLE */
+    /* ANIMATION DU POURCENTAGE ET DE LA BARRE DU 0% JUSQU'À LA VALEUR CIBLE */
     function animateSubdomainRows() {
       const now = new Date();
       subdomainsData.forEach(sub => {
@@ -812,12 +854,10 @@
         const numEl = document.getElementById(`num-${sub.id}`);
 
         if (fillEl && numEl) {
-          // Animation de la barre de progression
           setTimeout(() => {
             fillEl.style.width = `${targetPercent}%`;
           }, 100);
 
-          // Animation de l'incrémentation du nombre
           let currentVal = 0;
           const duration = 1800;
           const stepTime = Math.max(15, Math.floor(duration / (targetPercent || 1)));
@@ -1012,6 +1052,38 @@
       currentWebcamIndex = (currentWebcamIndex + 1) % webcamList.length;
     }
 
+    function loadNewVideoStream() {
+      const video = document.getElementById('custom-new-mp4-video');
+      if (video) {
+        video.src = newVideoList[currentNewVideoIndex];
+        video.currentTime = 0;
+        video.play().catch(e => console.log("Erreur vidéo:", e));
+
+        const onVideoEnded = () => {
+          video.removeEventListener('ended', onVideoEnded);
+          clearTimeout(newVideoTimeout);
+          finishNewVideoSlide();
+        };
+
+        video.addEventListener('ended', onVideoEnded);
+
+        newVideoTimeout = setTimeout(() => {
+          video.removeEventListener('ended', onVideoEnded);
+          finishNewVideoSlide();
+        }, 120000);
+
+        currentNewVideoIndex = (currentNewVideoIndex + 1) % newVideoList.length;
+      }
+      document.getElementById('bar-info').innerHTML = `<i class="fas fa-video"></i> St. Anton am Arlberg`;
+    }
+
+    function finishNewVideoSlide() {
+      restoreBarTemp();
+      const video = document.getElementById('custom-new-mp4-video');
+      if (video) video.pause();
+      transitionToNext(getNextStep(3));
+    }
+
     function loadVideoStream() {
       const video = document.getElementById('custom-mp4-video');
       if (video) {
@@ -1041,7 +1113,7 @@
       restoreBarTemp();
       const video = document.getElementById('custom-mp4-video');
       if (video) video.pause();
-      transitionToNext(getNextStep(7));
+      transitionToNext(getNextStep(8));
     }
 
     function restoreBarTemp() {
@@ -1060,18 +1132,19 @@
       document.getElementById('slideWelcome'),  /* 0. ACCUEIL */
       document.getElementById('slideToday'),    /* 1. MÉTÉO ACTUELLE DU JOUR */
       document.getElementById('slideForecast'), /* 2. PRÉVISIONS MÉTÉO 3 JOURS */
-      document.getElementById('slideWebcam'),   /* 3. WEBCAM LIVE */
-      document.getElementById('slideSnow'),     /* 4. TABLEAU DE NEIGE */
-      document.getElementById('slideLifts'),    /* 5. LIGNES D'ANIMATION TÉLÉPHÉRIQUES */
-      document.getElementById('slideMap'),      /* 6. CARTE SKI ARLBERG */
-      document.getElementById('slideVideo')     /* 7. VIDÉOS */
+      document.getElementById('slideNewVideo'), /* 3. NOUVELLES VIDÉOS */
+      document.getElementById('slideWebcam'),   /* 4. WEBCAM LIVE */
+      document.getElementById('slideSnow'),     /* 5. TABLEAU DE NEIGE */
+      document.getElementById('slideLifts'),    /* 6. LIGNES D'ANIMATION TÉLÉPHÉRIQUES */
+      document.getElementById('slideMap'),      /* 7. CARTE SKI ARLBERG */
+      document.getElementById('slideVideo')     /* 8. VIDÉOS */
     ];
     let step = 0;
 
     function getNextStep(fromStep) {
       let next = (fromStep + 1) % slides.length;
-      if (next === 3 && !isTimeBetween(6, 0, 20, 30)) {
-        return getNextStep(3);
+      if (next === 4 && !isTimeBetween(6, 0, 20, 30)) {
+        return getNextStep(4);
       }
       return next;
     }
@@ -1096,7 +1169,7 @@
 
     function runSequence() {
       if (step === 0) {
-        /* ACCUEIL */
+        /* 0. ACCUEIL */
         setWelcomeLanguage('de');
         setTimeout(() => setWelcomeLanguage('fr'), 5000);
         setTimeout(() => setWelcomeLanguage('en'), 10000);
@@ -1114,25 +1187,28 @@
         setTimeout(() => setForecastLanguage('en'), 10000);
         setTimeout(() => { transitionToNext(getNextStep(2)); }, 15000);
       } else if (step === 3) {
-        /* 3. WEBCAM LIVE */
+        /* 3. NOUVELLES VIDÉOS */
+        loadNewVideoStream();
+      } else if (step === 4) {
+        /* 4. WEBCAM LIVE */
         loadWebcamStream();
         setTimeout(() => { 
           document.getElementById('webcam-iframe').src = "about:blank";
           restoreBarTemp();
-          transitionToNext(getNextStep(3)); 
+          transitionToNext(getNextStep(4)); 
         }, 53000);
-      } else if (step === 4) {
-        /* 4. TABLEAU DE NEIGE */
+      } else if (step === 5) {
+        /* 5. TABLEAU DE NEIGE */
         updateSnowUI('de');
         setTimeout(() => updateSnowUI('fr'), 5000);
         setTimeout(() => updateSnowUI('en'), 10000);
         document.getElementById('bar-info').innerHTML = `<i class="fas fa-snowflake"></i> Schneebericht &nbsp;&bull;&nbsp; Ski Arlberg`;
         setTimeout(() => {
           restoreBarTemp();
-          transitionToNext(getNextStep(4));
+          transitionToNext(getNextStep(5));
         }, 15000);
-      } else if (step === 5) {
-        /* 5. TÉLÉPHÉRIQUES (LIGNES ANIMÉES DE 0 À POURCENTAGE) */
+      } else if (step === 6) {
+        /* 6. TÉLÉPHÉRIQUES (LIGNES ANIMÉES DE 0 À POURCENTAGE) */
         document.getElementById('bar-info').innerHTML = `<i class="fas fa-cable-car"></i> Bergbahnen Status &nbsp;&bull;&nbsp; Ski Arlberg`;
         initSubdomainRows();
         setTimeout(() => animateSubdomainRows(), 300);
@@ -1143,17 +1219,17 @@
 
         setTimeout(() => {
           restoreBarTemp();
-          transitionToNext(getNextStep(5));
+          transitionToNext(getNextStep(6));
         }, 15000);
-      } else if (step === 6) {
-        /* 6. CARTE SKI ARLBERG */
+      } else if (step === 7) {
+        /* 7. CARTE SKI ARLBERG */
         document.getElementById('bar-info').innerHTML = `<i class="fas fa-map-marked-alt"></i> Ski Arlberg &nbsp;&bull;&nbsp; St. Anton Panorama`;
         setTimeout(() => { 
           restoreBarTemp();
-          transitionToNext(getNextStep(6)); 
+          transitionToNext(getNextStep(7)); 
         }, 15000);
-      } else if (step === 7) {
-        /* 7. VIDÉOS */
+      } else if (step === 8) {
+        /* 8. VIDÉOS */
         loadVideoStream();
       }
     }
