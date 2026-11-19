@@ -56,8 +56,8 @@
       position: relative; 
     }
 
-    /* IMAGES D'ARRIÈRE-PLAN MÉTÉO */
-    .weather-img-bg {
+    /* VIDÉO D'ARRIÈRE-PLAN EN BOUCLE FLOUTÉE */
+    .video-bg {
       position: absolute;
       top: 0;
       left: 0;
@@ -66,21 +66,17 @@
       object-fit: cover;
       z-index: -1;
       filter: blur(18px) brightness(0.8) contrast(1.1);
-      transform: scale(1.1);
+      transform: scale(1.12);
       pointer-events: none;
-      transition: opacity 1.2s ease-in-out;
-      opacity: 0;
-    }
-    .weather-img-bg.active {
       opacity: 0.9;
     }
 
     /* BANDEAU DU BAS FIXE - LIQUID GLASS ARRONDI */
     .bottom-bar {
       height: 60px; 
-      background: rgba(10, 15, 30, 0.75); 
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(10, 15, 30, 0.52); 
+      backdrop-filter: blur(45px) saturate(150%);
+      -webkit-backdrop-filter: blur(45px) saturate(150%);
       color: #ffffff;
       display: flex; 
       align-items: center;
@@ -481,17 +477,13 @@
     /* WEBCAM ET VIDÉO */
     .webcam-container { width: 100%; height: 100vh; background: #000; position: relative; overflow: hidden; }
     .webcam-iframe { width: 100%; height: 100vh; border: none; position: absolute; top: 0; left: 0; }
-    .custom-video { width: 100%; height: 100vh; object-fit: cover; border: none; position: absolute; top: 0; left: 0; }
+    .custom-video { width: 100%; height: 100vh; object-fit: cover; border: none; position: absolute; top: 0; left: 0; transform: scale(1.06); }
   </style>
 </head>
 <body>
 
-  <!-- IMAGES MÉTÉO IMMERSIVES -->
-  <img class="weather-img-bg" id="img-sunny" src="https://media.istockphoto.com/id/491701259/fr/photo/bleu-ciel-avec-soleil.jpg?s=612x612&w=0&k=20&c=pcOsXjBU2W4TX9CMKpUWE5k5FjXU1Qq3znYtrImZbnc" alt="Grand soleil">
-  <img class="weather-img-bg" id="img-partly" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgdyTu067Q9DPniKfcm5RnDa3tkO6c2yZOPVH_vOBpuSVLUb-NbGNTWog&s=10" alt="Ensoleillé avec nuages">
-  <img class="weather-img-bg" id="img-cloudy" src="https://i.pinimg.com/474x/24/06/94/240694f5509f69f851cdfa5187cf96c0.jpg" alt="Nuageux">
-  <img class="weather-img-bg" id="img-rainy" src="https://st5.depositphotos.com/30884172/67941/i/450/depositphotos_679418814-stock-photo-window-small-raindrops-surface-glass.jpg" alt="Pluie">
-  <img class="weather-img-bg" id="img-snowy" src="https://thumbs.dreamstime.com/b/la-neige-qui-tombe-du-ciel-le-gel-et-temp%C3%AAte-de-graves-peuvent-%C3%Atre-contexte-pour-travail-cr%C3%A9atif-avec-post-traitement-sur-173893996.jpg" alt="Neige">
+  <!-- VIDÉO DE FOND EN BOUCLE SUR TOUTES LES SLIDES -->
+  <video class="video-bg" id="video-bg" src="https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/297042177.webm" autoplay loop muted playsinline></video>
 
   <div class="viewport">
 
@@ -917,23 +909,10 @@
     let weatherData = null;
     let currentLang = 'de';
 
-    function updateWeatherImageBackground(code) {
-      document.querySelectorAll('.weather-img-bg').forEach(img => img.classList.remove('active'));
-      let activeImgId = 'img-sunny';
-      if (code === 0) activeImgId = 'img-sunny';
-      else if (code >= 1 && code <= 3) activeImgId = 'img-partly';
-      else if (code >= 45 && code <= 48) activeImgId = 'img-cloudy';
-      else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) activeImgId = 'img-rainy';
-      else if (code >= 71 && code <= 77) activeImgId = 'img-snowy';
-      const activeImg = document.getElementById(activeImgId);
-      if (activeImg) activeImg.classList.add('active');
-    }
-
     async function fetchWeatherData() {
       try {
         const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=47.6254&longitude=7.2114&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Europe%2FParis');
         weatherData = await response.json();
-        updateWeatherImageBackground(weatherData.current.weather_code);
         updateWeatherUI(currentLang);
       } catch (error) { console.error("Erreur météo:", error); }
     }
@@ -1163,6 +1142,10 @@
       }, 1200);
 
       step = nextStep;
+      const videoBg = document.getElementById('video-bg');
+      if (videoBg && videoBg.paused) {
+        videoBg.play().catch(() => {});
+      }
       slides[step].classList.add('active');
       runSequence();
     }
