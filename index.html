@@ -274,11 +274,12 @@
       padding: 30px;
       display: flex;
       flex-direction: column;
-      background: rgba(10, 18, 32, 0.8);
-      backdrop-filter: blur(25px);
+      background: rgba(10, 18, 32, 0.42);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       border-radius: 24px;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
     .snow-header {
       font-size: 2.3rem;
@@ -297,7 +298,7 @@
       flex-grow: 1;
     }
     .snow-card {
-      background: rgba(15, 23, 42, 0.55);
+      background: rgba(15, 23, 42, 0.45);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 18px;
       padding: 20px;
@@ -352,11 +353,12 @@
       padding: 35px 45px;
       display: flex;
       flex-direction: column;
-      background: rgba(10, 18, 32, 0.85);
-      backdrop-filter: blur(25px);
+      background: rgba(10, 18, 32, 0.5);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-radius: 24px;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
     .lifts-header {
       font-size: 2.3rem;
@@ -378,7 +380,7 @@
     }
 
     .subdomain-row-item {
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(15, 23, 42, 0.48);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 20px;
       padding: 25px 30px;
@@ -482,8 +484,8 @@
 </head>
 <body>
 
-  <!-- VIDÉO DE FOND EN BOUCLE -->
-  <video class="video-bg" id="video-bg" src="https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/297042177_floue_legere%20(1).webm" autoplay loop muted playsinline></video>
+  <!-- VIDÉO D'ARRIÈRE-PLAN EN BOUCLE SELON L'HEURE DE LA JOURNÉE -->
+  <video class="video-bg" id="video-bg" src="" autoplay loop muted playsinline></video>
 
   <div class="viewport">
 
@@ -689,6 +691,59 @@
   </footer>
 
   <script>
+    /* VIDÉOS DE FOND PAR CRÉNEAU HORAIRE (ST. ANTON) */
+    const hourlyBackgrounds = [
+      { minutes: 5 * 60 + 40, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/5h40.mp4" },
+      { minutes: 6 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/6h20.mp4" },
+      { minutes: 7 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/7h20.mp4" },
+      { minutes: 8 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/8h20.mp4" },
+      { minutes: 9 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/9h20.mp4" },
+      { minutes: 10 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/10h20.mp4" },
+      { minutes: 11 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/11h20.mp4" },
+      { minutes: 12 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/12h20.mp4" },
+      { minutes: 13 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/13h20.mp4" },
+      { minutes: 14 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/14h20.mp4" },
+      { minutes: 15 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/15h20.mp4" },
+      { minutes: 16 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/16h20.mp4" },
+      { minutes: 17 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/17h20.mp4" },
+      { minutes: 18 * 60 + 20, url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/18h20.mp4" },
+      { minutes: 19 * 60 + 0,  url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/19h00.mp4" },
+      { minutes: 20 * 60 + 0,  url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/20h00.mp4" },
+      { minutes: 21 * 60 + 0,  url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/21h00.mp4" },
+      { minutes: 22 * 60 + 0,  url: "https://github.com/louistrommenschlager-netizen/tv-video/raw/refs/heads/main/22h00.mp4" }
+    ];
+    let currentBgUrl = "";
+
+    function getBackgroundForNow(now = new Date()) {
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      let selected = hourlyBackgrounds[hourlyBackgrounds.length - 1];
+      for (let i = 0; i < hourlyBackgrounds.length; i++) {
+        if (currentMinutes >= hourlyBackgrounds[i].minutes) {
+          selected = hourlyBackgrounds[i];
+        } else {
+          break;
+        }
+      }
+      return selected.url;
+    }
+
+    function updateHourlyBackground() {
+      const videoBg = document.getElementById('video-bg');
+      if (!videoBg) return;
+      const targetUrl = getBackgroundForNow(new Date());
+      if (currentBgUrl !== targetUrl) {
+        currentBgUrl = targetUrl;
+        videoBg.src = targetUrl;
+        videoBg.load();
+        videoBg.play().catch(() => {});
+      } else if (videoBg.paused) {
+        videoBg.play().catch(() => {});
+      }
+    }
+
+    updateHourlyBackground();
+    setInterval(updateHourlyBackground, 30000);
+
     /* WEBCAMS */
     const webcamList = [
       { name: "Valluga", altitude: "2 811 m", url: "https://webtv.feratel.com/webtv/?design=v3&cam=5690&lg=de" },
@@ -1142,10 +1197,7 @@
       }, 1200);
 
       step = nextStep;
-      const videoBg = document.getElementById('video-bg');
-      if (videoBg && videoBg.paused) {
-        videoBg.play().catch(() => {});
-      }
+      updateHourlyBackground();
       slides[step].classList.add('active');
       runSequence();
     }
